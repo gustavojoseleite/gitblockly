@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blockly Git: Aprendendo a utilizar o Git através da ferramenta Blockly</title>
+  <script src="../../blockly_compressed.js"></script>
+  <script src="../../blocks_compressed.js"></script>
+  <script src="../../javascript_compressed.js"></script>
+  <script src="../../msg/js/en.js"></script>
+
+  <script src="scripts/clonar.js"></script>
+  <script src="scripts/repo.js"></script>
+  <script src="scripts/sample.js"></script>
+  <script src="scripts/arq.js"></script>
+  <script src="scripts/inicializar.js"></script>
+  <script src="scripts/adicionar.js"></script>
+
+  <style>
+    body {
+      background-color: #fff;
+      font-family: sans-serif;
+    }
+    h1 {
+      font-weight: normal;
+      font-size: 140%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Blockly Git</h1>
+
+  <p>Esse é um simples gerador interativo de códigos para Git. Com ele é possível praticar os principais comandos do Git através da ferramenta Blockly. O aprendizado é baseado no agrupamento de blocos de modo a ter uma sintaxe válida para comandos utilizados no Git. Além disso, o usuário pode visualizar maiores informações a respeito do comando ou opção posicionando o cursor sobre o bloco. Por fim, ao término da junção dos blocos, basta clicar sobre o botão Gerar e um código correspondente aos blocos é gerado para que possa ser utilizado no próprio Git. </p>
+
+
+  <p>
+    <button onclick="showCode()">Gerar</button>
+  </p>
+
+  <div style="width: 100%">
+    <div id="blocklyDiv"
+        style="display: inline-block; height: 480px; width: 48%"></div>
+      <textarea id="rt" disabled="disabled"
+        style="display: inline-block; height: 480px; width: 20%;">
+      </textarea>
+      <textarea id="output" disabled="disabled"
+        style="display: inline-block; height: 480px; width: 28%;">
+    </textarea>
+  </div>
+
+  <xml id="toolbox" style="display: none">
+    <category name="COMANDOS" colour="210">...</category>
+    <category name="Para repositórios">
+      <block type="clonar"></block>
+      <block type="inicializar"></block>
+    </category>
+    <category name="Sobre repositorios">
+      <block type="adicionar"></block>
+    </category>
+    <category name="Outras opções">
+      <block type="repo"></block>
+      <block type="arq"></block>
+      <block type="nome_repo"></block>
+    </category>
+  </xml>
+
+  <xml id="startBlocks" style="display: none">
+  	<!
+    <block type="controls_if" inline="false" x="20" y="20">
+      <mutation else="1"></mutation>
+      <value name="IF0">
+        <block type="logic_compare" inline="true">
+          <field name="OP">EQ</field>
+          <value name="A">
+            <block type="math_arithmetic" inline="true">
+              <field name="OP">MULTIPLY</field>
+              <value name="A">
+                <block type="math_number">
+                  <field name="NUM">6</field>
+                </block>
+              </value>
+              <value name="B">
+                <block type="math_number">
+                  <field name="NUM">7</field>
+                </block>
+              </value>
+            </block>
+          </value>
+          <value name="B">
+            <block type="math_number">
+              <field name="NUM">42</field>
+            </block>
+          </value>
+        </block>
+      </value>
+      <statement name="DO0">
+        <block type="text_print" inline="false">
+          <value name="TEXT">
+            <block type="text">
+              <field name="TEXT">Don't panic</field>
+            </block>
+          </value>
+        </block>
+      </statement>
+      <statement name="ELSE">
+        <block type="text_print" inline="false">
+          <value name="TEXT">
+            <block type="text">
+              <field name="TEXT">Panic</field>
+            </block>
+          </value>
+        </block>
+      </statement>
+    </block>
+    >
+  </xml>
+
+  <script>
+    var demoWorkspace = Blockly.inject('blocklyDiv',
+        {media: '../../media/',
+         toolbox: document.getElementById('toolbox')});
+    Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),
+                               demoWorkspace);
+    var outputArea = document.getElementById('output');
+
+    function showCode() {
+      // Generate JavaScript code and display it.
+      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+      var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+      
+      //Trata blocos desconectados
+      if(code.search(";")>=0){
+        code = "Existem parâmetros desconectados!";
+      }    
+      outputArea.value = code;
+    }
+
+    function runCode() {
+      // Generate JavaScript code and run it.
+      window.LoopTrap = 1000;
+      Blockly.JavaScript.INFINITE_LOOP_TRAP =
+          'if (--window.LoopTrap == 0) throw "Infclonae loop.";\n';
+      var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+      try {
+        eval(code);
+      } catch (e) {
+        alert(e);
+      }
+    }
+  </script>
+
+</body>
+</html>

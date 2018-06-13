@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blockly Demo: Step Execution with JS Interpreter</title>
+  <script src="acorn_interpreter.js"></script>
+  <script src="../../blockly_compressed.js"></script>
+  <script src="../../blocks_compressed.js"></script>
+  <script src="../../javascript_compressed.js"></script>
+  <script src="../../msg/js/en.js"></script>
+
+  <script src="scripts/clone.js"></script>
+  <script src="scripts/init.js"></script>
+  <script src="scripts/repositorio.js"></script>
+  
+
+  <style>
+    body {
+      background-color: #fff;
+      font-family: sans-serif;
+    }
+    h1 {
+      font-weight: normal;
+      font-size: 140%;
+    }
+  </style>
+</head>
+<body>
+  <h1><a href="https://developers.google.com/blockly/">Blockly</a> &gt;
+    <a href="../index.html">Demos</a> &gt; Step Execution with JS Interpreter</h1>
+
+  <p>This is a demo of executing code step-by-step with a sandboxed JavaScript interpreter.</p>
+
+  <p>The generator's <code>Blockly.JavaScript.STATEMENT_PREFIX</code> is assigned <code>'highlightBlock(%1);\n'</code>,
+  where <code>%1</code> is the block id. The call to <code>highlightBlock()</code> will highlight the identified block
+  and set the variable <code>highlightPause</code> to <code>true</code>.</p>
+
+  <p>"Parse JavaScript" will generate the code and load it into the interpreter. Then, each press of the
+  "Step JavaScript" button will run the interpreter one step until the <code>highlightPause</code> is true.
+  That is, until <code>highlightBlock()</code> has highlighted the block that will be executed on the next step.</p>
+
+  <p>&rarr; <a href="https://developers.google.com/blockly/guides/configure-blockly/web/running-javascript#js_interpreter">More info on running code with JS Interpreter</a></p>
+ 
+   <p>
+    <button onclick="showCode()">Show JavaScript</button>
+    <button onclick="runCode()">Run JavaScript</button>
+  </p>
+
+  <div style="width: 100%">
+    <div id="blocklyDiv"
+        style="display: inline-block; height: 480px; width: 58%"></div>
+    <textarea id="output" disabled="disabled"
+        style="display: inline-block; height: 480px; width: 38%;">
+    </textarea>
+  </div>
+
+  <xml id="toolbox" style="display: none">
+    <category name="Comandos">
+      <block type="clone"></block>
+      <block type="init"></block>
+    </category>
+    <category name="Opções">
+      <block type="repositório"></block>
+    </category>
+  </xml>
+
+  <xml id="startBlocks" style="display: none">
+    <block type="variables_set" id="set_n_initial" inline="true" x="20" y="20">
+      <field name="VAR">n</field>
+      <value name="VALUE">
+        <block type="math_number">
+          <field name="NUM">1</field>
+        </block>
+      </value>
+      <next>
+        <block type="controls_repeat_ext" id="repeat" inline="true">
+          <value name="TIMES">
+            <block type="math_number">
+              <field name="NUM">4</field>
+            </block>
+          </value>
+          <statement name="DO">
+            <block type="variables_set" id="set_n_update" inline="true">
+              <field name="VAR">n</field>
+              <value name="VALUE">
+                <block type="math_arithmetic" inline="true">
+                  <field name="OP">MULTIPLY</field>
+                  <value name="A">
+                    <block type="variables_get">
+                      <field name="VAR">n</field>
+                    </block>
+                  </value>
+                  <value name="B">
+                    <block type="math_number">
+                      <field name="NUM">2</field>
+                    </block>
+                  </value>
+                </block>
+              </value>
+              <next>
+                <block type="text_print" id="print">
+                  <value name="TEXT">
+                    <block type="variables_get">
+                      <field name="VAR">n</field>
+                    </block>
+                  </value>
+                </block>
+              </next>
+            </block>
+          </statement>
+        </block>
+      </next>
+    </block>
+  </xml>
+
+  <script>
+    var demoWorkspace = Blockly.inject('blocklyDiv',
+        {media: '../../media/',
+         toolbox: document.getElementById('toolbox')});
+    Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),
+                               demoWorkspace);
+    var outputArea = document.getElementById('output');
+    
+    function showCode() {
+      // Generate JavaScript code and display it.
+      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+      var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+      alert(code);
+    }
+
+    function runCode() {
+      // Generate JavaScript code and run it.
+      window.LoopTrap = 1000;
+      Blockly.JavaScript.INFINITE_LOOP_TRAP =
+          'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+      var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+      try {
+        eval(code);
+      } catch (e) {
+        alert(e);
+      }
+    }
+  </script>
+</body>
+</html>
