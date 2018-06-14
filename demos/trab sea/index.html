@@ -9,11 +9,11 @@
   <script src="../../msg/js/en.js"></script>
 
   <script src="scripts/clonar.js"></script>
-  <script src="scripts/repo.js"></script>
   <script src="scripts/sample.js"></script>
-  <script src="scripts/arq.js"></script>
   <script src="scripts/inicializar.js"></script>
   <script src="scripts/adicionar.js"></script>
+  <script src="scripts/configurar.js"></script>
+  <script src="scripts/enviar.js"></script>
 
   <style>
     body {
@@ -50,16 +50,21 @@
   <xml id="toolbox" style="display: none">
     <category name="COMANDOS" colour="210">...</category>
     <category name="Para repositórios">
-      <block type="clonar"></block>
+      <block type="configurar"></block>
       <block type="inicializar"></block>
+      <block type="clonar"></block>
     </category>
     <category name="Sobre repositorios">
       <block type="adicionar"></block>
+      <block type="enviar"></block>
     </category>
     <category name="Outras opções">
-      <block type="repo"></block>
+      <block type="endereço_repositório"></block>
+      <block type="comentario"></block>
       <block type="arq"></block>
-      <block type="nome_repo"></block>
+      <block type="arquivo"></block>
+      <block type="diretório"></block>
+      <block type="nome_email"></block>
     </category>
   </xml>
 

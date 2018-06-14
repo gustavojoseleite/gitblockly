@@ -6,12 +6,12 @@ Blockly.defineBlocksWithJsonArray([
     {
       "type": "input_value",
       "name": "path",
-      "check": "nome_repo"
+      "check": "diretório"
     }
   ],
   "inputsInline": false,
   "colour": 10,
-  "tooltip": "Inicializa um novo repositório - Deve ser especificado o nome do repositório",
+  "tooltip": "O init faz com que o diretório seja preparado para ser gerenciado pelo git!",
   "helpUrl": ""
 }
 ]);
@@ -25,4 +25,30 @@ Blockly.JavaScript['inicializar'] = function(block) {
     var code = "git init " + subString;
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
   }
+};
+
+Blockly.defineBlocksWithJsonArray([
+{
+  "type": "diretório",
+  "lastDummyAlign0": "CENTRE",
+  "message0": "%1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "diretório",
+      "text": "diretório"
+    }
+  ],
+  "output": "diretório",
+  "colour": 10,
+  "tooltip": "Utilize '.' para o diretório atual ou informe o caminho do diretório desejado",
+  "helpUrl": ""
+}
+
+]);
+
+Blockly.JavaScript['diretório'] = function(block) {
+  var code = block.getFieldValue('diretório');
+  
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
