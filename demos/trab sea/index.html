@@ -32,19 +32,39 @@
   <p>Esse é um simples gerador interativo de códigos para Git. Com ele é possível praticar os principais comandos do Git através da ferramenta Blockly. O aprendizado é baseado no agrupamento de blocos de modo a ter uma sintaxe válida para comandos utilizados no Git. Além disso, o usuário pode visualizar maiores informações a respeito do comando ou opção posicionando o cursor sobre o bloco. Por fim, ao término da junção dos blocos, basta clicar sobre o botão Gerar e um código correspondente aos blocos é gerado para que possa ser utilizado no próprio Git. </p>
 
 
-  <p>
-    <button onclick="showCode()">Gerar</button>
-  </p>
 
   <div style="width: 100%">
     <div id="blocklyDiv"
         style="display: inline-block; height: 480px; width: 48%"></div>
-      <textarea id="rt" disabled="disabled"
-        style="display: inline-block; height: 480px; width: 20%;">
-      </textarea>
-      <textarea id="output" disabled="disabled"
+	<textarea id="output" disabled="disabled"
         style="display: inline-block; height: 480px; width: 28%;">
     </textarea>
+	<div id="textAreaContainer"
+		style="display: inline-block; height: 480px; width: 20%">
+		<textarea id="roteiro" disabled="disabled"
+			style="display: table-row; height: 357px; width: 100%;">
+		</textarea>
+		
+		<!--<textarea id="saida" disabled="disabled"
+			style="display: table-row; height: 120px; width: 100%;">
+		</textarea>-->
+		<code contenteditable="false">
+			<div id="statsDiv0">Dir: <span style="color: green">"bar"</span></div>
+			<div id="statsDiv1">User Name: <span style="color: green">"bar"</span></div>
+			<div id="statsDiv2">User Email: <span style="color: green">"bar"</span></div>
+			<div id="statsDiv3">Dir. Iniciado: <span style="color: green">"bar"</span></div>
+			<div id="statsDiv4">foo = <span style="color: green">"bar"</span></div>
+			<div id="statsDiv5"><span id="val50" style="color: blue">|</span></div>
+			<div id="statsDiv6"><span id="val60" style="color: blue">|</span></div>
+			<div id="statsDiv7"><span id="val70" style="color: blue">|</span></div>
+		</code>
+	</div>
+  </div>
+  
+  <div style="width: 48%">
+	<div style="float: right;">
+		<input type="button" onclick="showCode()" value="Gerar"></input>
+	</div>
   </div>
 
   <xml id="toolbox" style="display: none">
@@ -67,7 +87,6 @@
       <block type="nome_email"></block>
     </category>
   </xml>
-
   <xml id="startBlocks" style="display: none">
   	<!
     <block type="controls_if" inline="false" x="20" y="20">
@@ -127,16 +146,63 @@
                                demoWorkspace);
     var outputArea = document.getElementById('output');
 
+    var outputRoteiro = document.getElementById('roteiro');
+	
+	
+	
+	var outputSaida = document.getElementById('saida');
+	
+	//Stats
+	var stats = {
+	curDir: '/home',
+	isInit: false,
+	userName: 'eu',
+	userEmail: 'eu@teste',
+	branch: '',
+	valid: false};
+    
+
+    function showMission() {
+    	outputRoteiro.value = "Um teste de texto de um roteiro!!!";	
+    	// body...
+    }
+	
+	function showStats(){
+		//var x = (stats.isInit)?'Sim':'Não';
+		//outputSaida.value = 
+		//"Dir: "+ stats.curDir+"\n"+
+		//"User Name: "+stats.userName+"\n"+
+		//"User Email: "+stats.userEmail+"\n"+
+		//"Dir. Iniciado: "+x+"\n";
+		
+		var div0 = document.getElementById('statsDiv0');
+		var div1 = document.getElementById('statsDiv1');
+		var div2 = document.getElementById('statsDiv2');
+		var div3 = document.getElementById('statsDiv3');
+		var div4 = document.getElementById('statsDiv4');
+		var div5 = document.getElementById('statsDiv5');
+		var div6 = document.getElementById('statsDiv6');
+		var div7 = document.getElementById('statsDiv7');
+		
+		
+		div0.innerHTML = 'Dir: <span style="color: green">'+stats.curDir+'</span>';
+		div1.innerHTML = 'User Name: <span style="color: green">'+stats.userName+'</span>';
+		div2.innerHTML = 'User Email: <span style="color: green">'+stats.userEmail+'</span>';
+		div3.innerHTML = 'Dir. Iniciado: <span style="color: green">'+((stats.isInit)?'Sim':'Não')+'</span>';
+		div4.innerHTML = 'M: <span style="color: green">'+"M"+'</span>';
+	}
+	
+	function verifyCodeAndStats(){
+		
+	}
+
     function showCode() {
       // Generate JavaScript code and display it.
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
       var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
-      
-      //Trata blocos desconectados
-      if(code.search(";")>=0){
-        code = "Existem parâmetros desconectados!";
-      }    
       outputArea.value = code;
+	  showMission();
+	  showStats();
     }
 
     function runCode() {
