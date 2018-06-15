@@ -1,7 +1,7 @@
 Blockly.defineBlocksWithJsonArray([
 {
-  "type": "inicializar",
-  "message0": "inicializar %1",
+  "type": "initi",
+  "message0": "init %1",
   "args0": [
     {
       "type": "input_value",
@@ -16,10 +16,10 @@ Blockly.defineBlocksWithJsonArray([
 }
 ]);
 
-Blockly.JavaScript['inicializar'] = function(block) {
+Blockly.JavaScript['initi'] = function(block) {
   var subString = Blockly.JavaScript.valueToCode(block, "path", Blockly.JavaScript.ORDER_ADDITION) || '0';
   if(subString==0){
-    return "O bloco 'inicializar' necessita de parâmetros.";
+    return "O bloco 'init' necessita de parâmetros.";
   }
   else{
     var code = "git init " + subString;

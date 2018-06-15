@@ -1,7 +1,7 @@
 Blockly.defineBlocksWithJsonArray([
 {
-  "type": "adicionar",
-  "message0": "adicionar %1",
+  "type": "add",
+  "message0": "add %1",
   "args0": [
     {
       "type": "input_value",
@@ -19,10 +19,10 @@ Blockly.defineBlocksWithJsonArray([
 }
 ]);
 
-Blockly.JavaScript['adicionar'] = function(block) {
+Blockly.JavaScript['add'] = function(block) {
   var subString = Blockly.JavaScript.valueToCode(block,"path", Blockly.JavaScript.ORDER_ADDITION) || '0'
   if(subString==0){
-    return "O bloco 'adicionar' necessita de parâmetros.";
+    return "O bloco 'add' necessita de parâmetros.";
   }
   else{
     var code = "git add " + subString;

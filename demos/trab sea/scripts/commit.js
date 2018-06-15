@@ -1,7 +1,7 @@
 Blockly.defineBlocksWithJsonArray([
 {
-  "type": "enviar",
-  "message0": "enviar %1 %2",
+  "type": "commit",
+  "message0": "commit %1 %2",
   "args0": [
     {
       "type": "field_dropdown",
@@ -29,7 +29,7 @@ Blockly.defineBlocksWithJsonArray([
 }
 ]);
 
-Blockly.JavaScript['enviar'] = function(block) {
+Blockly.JavaScript['commit'] = function(block) {
   var dropdown_name = block.getFieldValue('NAME');
   var subString = Blockly.JavaScript.valueToCode(block, 'path', Blockly.JavaScript.ORDER_ADDITION) || '0';
   //var statements_path = Blockly.JavaScript.statementToCode(block, 'path');

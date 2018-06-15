@@ -1,7 +1,7 @@
 Blockly.defineBlocksWithJsonArray([
 {
-  "type": "clonar",
-  "message0": "clonar %1 %2",
+  "type": "clone",
+  "message0": "clone %1 %2",
   "args0": [
     {
       "type": "field_input",
@@ -20,7 +20,7 @@ Blockly.defineBlocksWithJsonArray([
 }
 ]);
 
-Blockly.JavaScript['clonar'] = function(block) {
+Blockly.JavaScript['clone'] = function(block) {
   var text_name = block.getFieldValue('NAME');
   var subString = Blockly.JavaScript.valueToCode(block, "path", Blockly.JavaScript.ORDER_ADDITION) || '0';
   //var statements_path = Blockly.JavaScript.statementToCode(block, 'path');

@@ -1,7 +1,7 @@
 Blockly.defineBlocksWithJsonArray([
 {
-  "type": "configurar",
-  "message0": "configuração %1 %2 %3",
+  "type": "config",
+  "message0": "config %1 %2 %3",
   "args0": [
     {
       "type": "field_dropdown",
@@ -52,12 +52,12 @@ Blockly.defineBlocksWithJsonArray([
 
 ]);
 
-Blockly.JavaScript['configurar'] = function(block) {
+Blockly.JavaScript['config'] = function(block) {
   var dropdown_opcao = block.getFieldValue('opcao');
   var dropdown_tipo_entrada = block.getFieldValue('tipo_entrada');
   var subString = Blockly.JavaScript.valueToCode(block, "path", Blockly.JavaScript.ORDER_ADDITION) || '0';
   if(subString==0){
-    return "O bloco 'configurar' necessita de parâmetros.";
+    return "O bloco 'config' necessita de parâmetros.";
   }
   else{
     var code = "git config " + "--" + dropdown_opcao + " " + dropdown_tipo_entrada + " " + "\"" + subString + "\"";

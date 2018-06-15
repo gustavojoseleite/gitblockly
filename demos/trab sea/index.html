@@ -8,12 +8,11 @@
   <script src="../../javascript_compressed.js"></script>
   <script src="../../msg/js/en.js"></script>
 
-  <script src="scripts/clonar.js"></script>
-  <script src="scripts/sample.js"></script>
-  <script src="scripts/inicializar.js"></script>
-  <script src="scripts/adicionar.js"></script>
-  <script src="scripts/configurar.js"></script>
-  <script src="scripts/enviar.js"></script>
+  <script src="scripts/clone.js"></script>
+  <script src="scripts/initi.js"></script>
+  <script src="scripts/add.js"></script>
+  <script src="scripts/config.js"></script>
+  <script src="scripts/commit.js"></script>
 
   <style>
     body {
@@ -70,19 +69,19 @@
   <xml id="toolbox" style="display: none">
     <category name="COMANDOS" colour="210">...</category>
     <category name="Para repositórios">
-      <block type="configurar"></block>
-      <block type="inicializar"></block>
-      <block type="clonar"></block>
+      <block type="config"></block>
+      <block type="initi"></block>
+      <block type="clone"></block>
     </category>
     <category name="Sobre repositorios">
-      <block type="adicionar"></block>
-      <block type="enviar"></block>
+      <block type="add"></block>
+      <block type="commit"></block>
     </category>
     <category name="Outras opções">
       <block type="endereço_repositório"></block>
       <block type="comentario"></block>
-      <block type="arq"></block>
       <block type="arquivo"></block>
+      <block type="arq"></block>
       <block type="diretório"></block>
       <block type="nome_email"></block>
     </category>
@@ -200,6 +199,10 @@
       // Generate JavaScript code and display it.
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
       var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+      //Trata blocos desconectados
+      if(code.search(";")>=0){
+        code = "Existem parâmetros desconectados!";
+      }  
       outputArea.value = code;
 	  showMission();
 	  showStats();
