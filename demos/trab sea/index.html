@@ -261,7 +261,7 @@
 	var aux = -1;
 	
 	var i;
-	//debugger;
+	debugger;
 		for (i = 0; i < pos.length; i++) {
 			aux = -1;
 			aux = codeLines[pos[i]].search("git init");
@@ -295,6 +295,7 @@
 				if(existClone || stats.isInit){
 					msg = msg +"\nAviso! O diretório já foi clonado!(comando 'git clone' dado mais de uma vez ou após um 'git init')\n"
 					existClone2OrMore = true;
+					existClone = true;
 					repRemoto = '';
 				}
 				else{
@@ -304,7 +305,7 @@
 			}
 		}
 		
-		stats.isInit = (existClone && !(existClone2OrMore));
+		stats.isInit = (existClone)?(existClone && !(existClone2OrMore)):stats.isInit;
 		stats.repRemoto = repRemoto;
 	}
 	
@@ -332,10 +333,10 @@
 	//---------------------------------------
 		//Valores de Teste!
 		
-	  var u = 'git clone gitTest.com/repo\ngit clone gitTest.com/repo2\n';
-	  var v = 'git init\ngit clone gitTest.com/repo\n';
-	  var w = 'git clone gitTest.com/repo\n';
-	  var x = 'git config --global user.name gui\ngit config --global user.email upa@teste\ngit init\ngit init';
+	  var u = 'git clone gitTest.com/repo\ngit clone gitTest.com/repo2\n'; //2x clone
+	  var v = 'git init\ngit clone gitTest.com/repo\n'; //Init + Clone
+	  var w = 'git clone gitTest.com/repo\n'; //Clone
+	  var x = 'git config --global user.name gui\ngit config --global user.email upa@teste\ngit init\ngit init'; //name+email+ 2xInit
 	  var y = 'git config --global user.name gui\ngit config --global user.email upa@teste\n';
 	  var z = 'git init\n';
 	  
@@ -344,11 +345,11 @@
 	  msg = '';
 	  var codeLines = code.split('\n');
 	  
-	  //var pos = checkComand(codeLines, 'git config --global');
-	  //checkConfig(codeLines, pos);
+	  var pos = checkComand(codeLines, 'git config --global');
+	  checkConfig(codeLines, pos);
 	  
-	  //var pos = checkComand(codeLines, 'git init');
-	  //checkInit(codeLines, pos);
+	  var pos = checkComand(codeLines, 'git init');
+	  checkInit(codeLines, pos);
 	  
 	  var pos = checkComand(codeLines, 'git clone');
 	  checkClone(codeLines, pos);
