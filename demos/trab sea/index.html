@@ -212,7 +212,7 @@
 		
 		var i;
 		
-		debugger;
+		//debugger;
 		for (i = 0; i < codeLines.length; i++) {
 			
 			if (codeLines[i].search(comand)>=0) {
@@ -261,7 +261,7 @@
 	var aux = -1;
 	
 	var i;
-	debugger;
+	//debugger;
 		for (i = 0; i < pos.length; i++) {
 			aux = -1;
 			aux = codeLines[pos[i]].search("git init");
@@ -287,7 +287,7 @@
 	var aux = -1;
 	
 	var i;
-	debugger;
+	//debugger;
 		for (i = 0; i < pos.length; i++) {
 			aux = -1;
 			aux = codeLines[pos[i]].search("git clone");
@@ -342,7 +342,7 @@
 	//----------------------------------------------
 	
 	  msg = '';
-	  var codeLines = w.split('\n');
+	  var codeLines = code.split('\n');
 	  
 	  //var pos = checkComand(codeLines, 'git config --global');
 	  //checkConfig(codeLines, pos);
