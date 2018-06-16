@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Blockly Git: Aprendendo a utilizar o Git através da ferramenta Blockly</title>
+
   <script src="../../blockly_compressed.js"></script>
   <script src="../../blocks_compressed.js"></script>
   <script src="../../javascript_compressed.js"></script>
@@ -40,23 +41,30 @@
     </textarea>
 	<div id="textAreaContainer"
 		style="display: inline-block; height: 480px; width: 20%">
-		<textarea id="roteiro" disabled="disabled"
-			style="display: table-row; height: 357px; width: 100%;">
-		</textarea>
-		
+		<div
+			style="display: table-row; height: 360px; width: 100%">
+			<textarea id="roteiro" disabled="disabled"
+				style="display: block; height: 360px; width: 100%;">
+			</textarea>
+		</div>
 		<!--<textarea id="saida" disabled="disabled"
 			style="display: table-row; height: 120px; width: 100%;">
 		</textarea>-->
+		<div
+			style="display: table-row; height: 100%; width: 100%">
 		<code contenteditable="false">
+			<div id="statsDiv"><span id="val" style="display: inline-block; color: blue">Variáveis</span></div>
 			<div id="statsDiv0">Dir: <span style="color: green">"bar"</span></div>
 			<div id="statsDiv1">User Name: <span style="color: green">"bar"</span></div>
 			<div id="statsDiv2">User Email: <span style="color: green">"bar"</span></div>
-			<div id="statsDiv3">Dir. Iniciado: <span style="color: green">"bar"</span></div>
-			<div id="statsDiv4">foo = <span style="color: green">"bar"</span></div>
-			<div id="statsDiv5"><span id="val50" style="color: blue">|</span></div>
-			<div id="statsDiv6"><span id="val60" style="color: blue">|</span></div>
-			<div id="statsDiv7"><span id="val70" style="color: blue">|</span></div>
+			<div id="statsDiv3">Rep. Iniciado: <span style="color: green">"bar"</span></div>
+			<div id="statsDiv4">foo = <span style="display: inline-block; color: green">"bar"</span></div>
+			<!--<div id="statsDiv5"><span id="val50" style="display: inline-block; color: blue"></span></div>
+			<div id="statsDiv6"><span id="val60" style="display: inline-block; color: blue"></span></div>
+			-->
+			
 		</code>
+		</div>
 	</div>
   </div>
   
@@ -155,13 +163,21 @@
 	var stats = {
 	curDir: '/home',
 	isInit: false,
-	userName: 'eu',
-	userEmail: 'eu@teste',
+	userName: '',
+	userEmail: '',
 	branch: '',
+	repRemoto: '',
 	valid: false};
+	
+	var msg = '';
     
 
-    function showMission() {
+	
+	
+	//------------------------------------------------------
+    
+	
+	function showMission() {
     	outputRoteiro.value = "Um teste de texto de um roteiro!!!";	
     	// body...
     }
@@ -183,18 +199,125 @@
 		var div6 = document.getElementById('statsDiv6');
 		var div7 = document.getElementById('statsDiv7');
 		
-		
-		div0.innerHTML = 'Dir: <span style="color: green">'+stats.curDir+'</span>';
-		div1.innerHTML = 'User Name: <span style="color: green">'+stats.userName+'</span>';
-		div2.innerHTML = 'User Email: <span style="color: green">'+stats.userEmail+'</span>';
-		div3.innerHTML = 'Dir. Iniciado: <span style="color: green">'+((stats.isInit)?'Sim':'Não')+'</span>';
-		div4.innerHTML = 'M: <span style="color: green">'+"M"+'</span>';
+		div0.innerHTML = 'Dir: <span style="display: inline-block; color: green">'+stats.curDir+'</span>';
+		div1.innerHTML = 'User Name: <span style="display: inline-block; color: green">'+stats.userName+'</span>';
+		div2.innerHTML = 'User Email: <span style="display: inline-block; color: green">'+stats.userEmail+'</span>';
+		div3.innerHTML = 'Rep. Iniciado: <span style="display: inline-block; color: green">'+((stats.isInit)?'Sim':'Não')+'</span>';
+		div4.innerHTML = 'Rep. Remoto: <span style="display: inline-block; color: green">'+stats.repRemoto+'</span>';
 	}
 	
-	function verifyCodeAndStats(){
+	function checkComand(codeLines, comand){
+		var existComand = false;
+		var pos = [];
+		
+		var i;
+		
+		debugger;
+		for (i = 0; i < codeLines.length; i++) {
+			
+			if (codeLines[i].search(comand)>=0) {
+				pos.push(i);
+			}
+		}
+		return(pos)
+	}
+	
+	function checkConfig(codeLines, pos) {
+	var existConfig = false;
+	var existConfigName = false;
+	var existConfigEmail = false;
+
+		
+	var aux = -1;
+	
+	var i;
+		for (i = 0; i < pos.length; i++) {
+			aux = -1
+		
+			aux = codeLines[pos[i]].search("user.name");
+			if(aux >= 0){
+				stats.userName = codeLines[pos[i]].substring(aux+10);				
+				existConfigName = true;
+			}
+			else{
+				aux = codeLines[pos[i]].search("user.email");
+				if(aux >= 0){
+					stats.userEmail = codeLines[pos[i]].substring(aux+11);				
+					existConfigEmail = true;
+				}
+			}
+		
+		}
+		
+		if(existConfigName && existConfigEmail){
+			existConfig = true;
+		}
+	}
+	
+	function checkInit(codeLines, pos) {
+	var existInit = false;
+	var existInit2OrMore = false;
+
+	var aux = -1;
+	
+	var i;
+	debugger;
+		for (i = 0; i < pos.length; i++) {
+			aux = -1;
+			aux = codeLines[pos[i]].search("git init");
+			if(aux >= 0){
+				if(existInit || stats.isInit){
+					msg = msg +"\nAviso! O diretório já foi iniciado!(comando 'git init' dado mais de uma vez ou após um 'git clone')\n"
+					existInit2OrMore = true;
+				}
+				else{
+					existInit = true;
+				}
+			}
+		}
+		
+		stats.isInit = (existInit && !(existInit2OrMore));
+	}
+	
+	function checkClone(codeLines, pos) {
+	var existClone = false;
+	var existClone2OrMore = false;
+	var repRemoto = '';
+	
+	var aux = -1;
+	
+	var i;
+	debugger;
+		for (i = 0; i < pos.length; i++) {
+			aux = -1;
+			aux = codeLines[pos[i]].search("git clone");
+			if(aux >= 0){
+				if(existClone || stats.isInit){
+					msg = msg +"\nAviso! O diretório já foi clonado!(comando 'git clone' dado mais de uma vez ou após um 'git init')\n"
+					existClone2OrMore = true;
+					repRemoto = '';
+				}
+				else{
+					existClone = true;
+					repRemoto = codeLines[pos[i]].substring(aux+10);
+				}
+			}
+		}
+		
+		stats.isInit = (existClone && !(existClone2OrMore));
+		stats.repRemoto = repRemoto;
+	}
+	
+
+	//----------------------
+		function verifyCodeAndStats(){
 		
 	}
-
+	//----------------------
+		function verifyCodeAndStats(){
+		
+	}
+	
     function showCode() {
       // Generate JavaScript code and display it.
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
@@ -204,8 +327,36 @@
         code = "Existem parâmetros desconectados!";
       }  
       outputArea.value = code;
+	
+	
+	//---------------------------------------
+		//Valores de Teste!
+		
+	  var u = 'git clone gitTest.com/repo\ngit clone gitTest.com/repo2\n';
+	  var v = 'git init\ngit clone gitTest.com/repo\n';
+	  var w = 'git clone gitTest.com/repo\n';
+	  var x = 'git config --global user.name gui\ngit config --global user.email upa@teste\ngit init\ngit init';
+	  var y = 'git config --global user.name gui\ngit config --global user.email upa@teste\n';
+	  var z = 'git init\n';
+	  
+	//----------------------------------------------
+	
+	  msg = '';
+	  var codeLines = w.split('\n');
+	  
+	  //var pos = checkComand(codeLines, 'git config --global');
+	  //checkConfig(codeLines, pos);
+	  
+	  //var pos = checkComand(codeLines, 'git init');
+	  //checkInit(codeLines, pos);
+	  
+	  var pos = checkComand(codeLines, 'git clone');
+	  checkClone(codeLines, pos);
+	  
 	  showMission();
 	  showStats();
+	  
+	  outputArea.value = code+msg;
     }
 
     function runCode() {
