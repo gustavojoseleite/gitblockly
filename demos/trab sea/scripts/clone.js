@@ -46,7 +46,7 @@ Blockly.defineBlocksWithJsonArray([
       "text": "endereço_destino"
     }
   ],
-  "previousStatement": null,
+  "previousStatement": "endereço_repositório",
   "colour": 230,
   "tooltip": "Endereço de destino de um repositório a ser clonado",
   "helpUrl": ""

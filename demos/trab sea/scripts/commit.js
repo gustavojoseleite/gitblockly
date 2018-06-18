@@ -65,7 +65,7 @@ Blockly.defineBlocksWithJsonArray([
       "text": "comentário"
     }
   ],
-  "previousStatement": null,
+  "previousStatement": "comentario",
   "colour": 195,
   "tooltip": "Comentário rotulado a alteração feita no repositório",
   "helpUrl": ""

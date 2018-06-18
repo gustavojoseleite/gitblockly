@@ -76,7 +76,7 @@ Blockly.defineBlocksWithJsonArray([
       "text": "nome/email"
     }
   ],
-  "output": null,
+  "output": "nome_email",
   "colour": 50,
   "tooltip": "Informe usuário ou Email",
   "helpUrl": ""

@@ -73,7 +73,7 @@ Blockly.defineBlocksWithJsonArray([
       "check": "arq"
     }
   ],
-  "output": null,
+  "output": "arq",
   "colour": 135,
   "tooltip": "Informe o nome de um dos arquivos que deseja adicionar",
   "helpUrl": ""
