@@ -167,6 +167,8 @@
 	userEmail: '',
 	branch: '',
 	repRemoto: '',
+	index: [], //{filename: "", modified: false, staged: false}
+	files: [], //{filename: ""}
 	valid: false};
 	
 	var msg = '';
@@ -222,98 +224,299 @@
 		return(pos)
 	}
 	
-	function checkConfig(codeLines, pos) {
-	var existConfig = false;
-	var existConfigName = false;
-	var existConfigEmail = false;
-
-		
+	function checkConfig(codeLine) {
+	
 	var aux = -1;
 	
-	var i;
-		for (i = 0; i < pos.length; i++) {
-			aux = -1
-		
-			aux = codeLines[pos[i]].search("user.name");
-			if(aux >= 0){
-				stats.userName = codeLines[pos[i]].substring(aux+10);				
-				existConfigName = true;
-			}
-			else{
-				aux = codeLines[pos[i]].search("user.email");
-				if(aux >= 0){
-					stats.userEmail = codeLines[pos[i]].substring(aux+11);				
-					existConfigEmail = true;
-				}
-			}
-		
-		}
-		
-		if(existConfigName && existConfigEmail){
-			existConfig = true;
+	var r = ''
+			
+	aux = codeLine.search("user.name");
+	if(aux >= 0){
+		stats.userName = codeLine.substring(aux+10);				
+	}
+	else{
+		aux = codeLine.search("user.email");
+		if(aux >= 0){
+			stats.userEmail = codeLine.substring(aux+11);				
 		}
 	}
 	
-	function checkInit(codeLines, pos) {
+	return (r);
+	}
+	
+	function checkInit(codeLine) {
 	var existInit = false;
 	var existInit2OrMore = false;
 
 	var aux = -1;
-	
-	var i;
-	debugger;
-		for (i = 0; i < pos.length; i++) {
-			aux = -1;
-			aux = codeLines[pos[i]].search("git init");
-			if(aux >= 0){
-				if(existInit || stats.isInit){
-					msg = msg +"\nAviso! O diretório já foi iniciado!(comando 'git init' dado mais de uma vez ou após um 'git clone')\n"
-					existInit2OrMore = true;
-				}
-				else{
-					existInit = true;
-				}
-			}
+	var r = '';
+
+	aux = codeLine.search("git init");
+	if(aux >= 0){
+		if(stats.isInit){
+			r = r +"\nAviso! O diretório já foi iniciado!(comando 'git init' dado mais de uma vez ou após um 'git clone')\n"
+			existInit2OrMore = true;
 		}
+		else{
+			existInit = true;
+		}
+	}
 		
-		stats.isInit = (existInit && !(existInit2OrMore));
+	stats.isInit = (existInit && !(existInit2OrMore));
+	
+	return(r);
 	}
 	
-	function checkClone(codeLines, pos) {
+	function checkClone(codeLine) {
 	var existClone = false;
 	var existClone2OrMore = false;
 	var repRemoto = '';
 	
 	var aux = -1;
-	
-	var i;
+	var r = '';
 	//debugger;
-		for (i = 0; i < pos.length; i++) {
-			aux = -1;
-			aux = codeLines[pos[i]].search("git clone");
-			if(aux >= 0){
-				if(existClone || stats.isInit){
-					msg = msg +"\nAviso! O diretório já foi clonado!(comando 'git clone' dado mais de uma vez ou após um 'git init')\n"
-					existClone2OrMore = true;
-					existClone = true;
-					repRemoto = '';
-				}
-				else{
-					existClone = true;
-					repRemoto = codeLines[pos[i]].substring(aux+10);
-				}
-			}
+
+	aux = codeLine.search("git clone");
+	if(aux >= 0){
+		if(stats.isInit){
+			r = r +"\nAviso! O diretório já foi clonado!(comando 'git clone' dado mais de uma vez ou após um 'git init')\n"
+			existClone2OrMore = true;
+			existClone = true;
+			repRemoto = '';
 		}
+		else{
+			existClone = true;
+			repRemoto = codeLine.substring(aux+10);
+		}
+	}
 		
 		stats.isInit = (existClone)?(existClone && !(existClone2OrMore)):stats.isInit;
 		stats.repRemoto = repRemoto;
+		
+		return(r);
+	}
+		
+	function checkAdd(codeLine) {
+	
+	var existInit = false;
+	var existInit2OrMore = false;
+
+	var files;
+	var aux = -1;
+	
+	
+	var j;
+	
+	var r = '';
+	
+	var idx;
+	//debugger;
+
+	
+	aux = codeLine.search("git add");
+	if(aux >= 0){
+		files = codeLine.split(' ');
+		if(files.length>2){
+			for(j = 2; j<files.length;j++){
+				
+				
+				//Verifica se já indexado e preparado:
+				idx = stats.index.findIndex((elem) => {
+				return(files[j] === elem.filename);
+				});
+				
+				if(idx > -1){
+					if(stats.index[idx].staged == true){
+						r = r+ "\nArquivo: "+files[j]+" Já foi adicionado! (Comando git add repetido!)";
+					}
+					else{
+						stats.index[idx].staged = true;
+						r = r+ "\nArquivo: "+files[j]+" Preparado para ser salvo!";
+					}
+				}
+				else{
+					//------
+					//Verifica se existe o arquivo...
+					//-------
+					
+					idx = -1;
+					
+					idx = stats.files.findIndex((elem) => {
+					return(files[j] === elem.filename);
+					});
+				
+					//E o adiciona ao index...
+					if( idx > -1){
+						stats.files.splice(idx,1);
+						stats.index.push({filename: files[j], modified: true, staged: true});
+						r = r+ "\nArquivo: "+files[j]+" Adicionado ao Index e preparado para ser salvo!";
+					}else{
+						r = r+ "\nArquivo: "+files[j]+" Não encontrado";
+					}
+	
+					
+					
+					
+				}
+				
+			}
+		}
+		else{
+			r = r+"\nIndique um arquivo válido no git add!";
+		}
+	}
+		
+		//stats.isInit = (existInit && !(existInit2OrMore));
+	return(r);
+	}
+
+	function checkCommit(codeLine){
+		
+		
+		
+		
+		
+		
+		var i;
+		
+		var itsA = false;
+		var itsM = false;
+		var hasM = false;
+		var comment = '\nComentário:';
+		var r = '';
+		
+		
+		var param = codeLine.split(' ');
+		
+		if(param.length > 2){
+			//'git commit -a'
+			//'git commit -m'
+			for(i = 2; i<param.length;i++){
+			
+				switch(param[i]){
+					case '-a':
+						itsA = true;
+						break;
+					
+					case '-m':
+						itsM = true;
+						break;
+					
+					default:
+						if(itsM){
+								comment = comment +" "+ param[i];
+								if(param[i][param[i].length-1] == '"'){
+									itsM = false;
+								}
+								else{
+									comment = comment +" ";
+								}
+							}
+						hasM = true;
+						break;
+				}
+				
+				
+			}
+		}
+		
+		if(itsA){
+			for(i = 0; i<stats.index.length; i++){
+				if (stats.index[i].modified == true && stats.index[i].staged == false){
+					stats.index[i].staged = false;
+					stats.index[i].modified = false;
+					r = r + "\nArquivo: "+stats.index[i].filename+" Indexado e Salvo!";
+				}else if(stats.index[i].modified == true && stats.index[i].staged == true){
+					stats.index[i].staged = false;
+					stats.index[i].modified = false;
+					r = r + "\nArquivo: "+stats.index[i].filename+" Salvo!";
+				}
+				else if(stats.index[i].modified == false && stats.index[i].staged == true){
+					stats.index[i].staged = false;
+					stats.index[i].modified = false;
+					r = r + "\nArquivo: "+stats.index[i].filename+" Arquivo já atualizado!";
+				}
+			}
+		}
+		else{//'git commit ou git commit -m'
+			for(i = 0; i<stats.index.length; i++){
+				if(stats.index[i].modified == true && stats.index[i].staged == true){
+					stats.index[i].staged = false;
+					stats.index[i].modified = false;
+					r = r + "\nArquivo: "+stats.index[i].filename+" Salvo!";
+				}
+				else if(stats.index[i].modified == false && stats.index[i].staged == true){
+					stats.index[i].staged = false;
+					stats.index[i].modified = false;
+					r = r + "\nArquivo: "+stats.index[i].filename+" Arquivo já atualizado!";
+				}
+			}
+			
+		}
+	
+	if(stats.index.length < 1){
+		comment = '';
+		r = r+"Nenhum arquivo adicionado, nada a fazer! (Dica: Tente usar -a, ou adicionar arquivos so index usando git add)";
+	} else if(!hasM){
+		comment = comment +'Na realidade, o Git abriria um editor para que seja adicionado um comentário. (Dica: É mais fácil usar git commit -m "Comentário")';
+	}
+			
+	return(r+'\n'+comment);
 	}
 	
-
-	//----------------------
-		function verifyCodeAndStats(){
+	function parseCode(code){
+		var lines = code.split('\n');
+		var i;
+		var j;
+		var msg = '';
+		
+		//debugger;
+		
+		
+		for (i = 0; i<lines.length; i++){
+			var command = lines[i].split(' ');
+			msg = msg + lines[i] +'\n'
+			if 		(command[0].search('git')>=0) {
+				switch(command[1]){
+					case "config":
+						msg = msg + checkConfig(lines[i]);
+						break;
+						
+					case "init":
+						msg = msg + checkInit(lines[i]);
+						break;
+						
+					case "clone":
+						msg = msg + checkClone(lines[i]);
+						break;
+						
+					case "add":
+						msg = msg + checkAdd(lines[i]);
+						break;
+						
+					case "commit":
+						msg = msg + checkCommit(lines[i]);
+						break;
+				}
+			}
+			else  if(command[0].search('#Modificar')>=0){
+				console.log('#Modificar');
+			}
+			else  if(command[0].search('#Criar')>=0){
+				console.log('#Criar');
+			}
+			else{
+				msg = msg+"#Fim do Programa";
+			}
+			
+		}
+		
+		return(msg);
+		
+		
 		
 	}
+	
 	//----------------------
 		function verifyCodeAndStats(){
 		
@@ -331,33 +534,42 @@
 	
 	
 	//---------------------------------------
-		//Valores de Teste!
-		
+		//Casos de Teste!
+	  //var n = '#Criar arquivoTeste1'
+	  //var o = '#Modificar arquivoTeste1'
+	  var k = 'git commit -m -a "Comentario Teste!"';
+	  var l = 'git commit -a -m "Comentario Teste!"';
+	  var m = 'git commit -m "Comentario Teste!"';
+	  var n = 'git commit -a';
+	  //stats.index = [{filename: "ArquivoTeste1", modified: false, staged: false}, {filename: "ArquivoTeste2", modified: false, staged: true}, {filename: "ArquivoTeste3", modified: true, staged: false}, {filename: "ArquivoTeste4", modified: true, staged: true}];
+	  
+	  var o = 'git commit';
+      var p = 'git init\ngit clone gitTest.com/repo\ngit init\n';		
+	  var q = 'git add ArquivoTeste1 ArquivoTeste1 ArquivoTeste2\n';
+	  var r = 'git add ArquivoTeste1 ArquivoTeste1\n';	
+	  var s = 'git add ArquivoTeste1 ArquivoTeste2\n';
+	  var t = 'git add ArquivoTeste1\n';
+	  
+	  stats.files = [{filename: "ArquivoTeste1"}, {filename: "ArquivoTeste2"}];
+	  
 	  var u = 'git clone gitTest.com/repo\ngit clone gitTest.com/repo2\n'; //2x clone
 	  var v = 'git init\ngit clone gitTest.com/repo\n'; //Init + Clone
 	  var w = 'git clone gitTest.com/repo\n'; //Clone
 	  var x = 'git config --global user.name gui\ngit config --global user.email upa@teste\ngit init\ngit init'; //name+email+ 2xInit
-	  var y = 'git config --global user.name gui\ngit config --global user.email upa@teste\n';
-	  var z = 'git init\n';
+	  var y = 'git config --global user.name gui\ngit config --global user.email upa@teste\n'; //name+email
+	  var z = 'git init\n'; //Init
 	  
 	//----------------------------------------------
 	
-	  msg = '';
-	  var codeLines = code.split('\n');
+	  var msg = '';
 	  
-	  var pos = checkComand(codeLines, 'git config --global');
-	  checkConfig(codeLines, pos);
-	  
-	  var pos = checkComand(codeLines, 'git init');
-	  checkInit(codeLines, pos);
-	  
-	  var pos = checkComand(codeLines, 'git clone');
-	  checkClone(codeLines, pos);
+	  msg = parseCode(code);
 	  
 	  showMission();
 	  showStats();
 	  
-	  outputArea.value = code+msg;
+	  //outputArea.value = code+msg;
+	  outputArea.value = msg;
     }
 
     function runCode() {
