@@ -36,15 +36,23 @@
   <div style="width: 100%">
     <div id="blocklyDiv"
         style="display: inline-block; height: 480px; width: 48%"></div>
-	<textarea id="output" disabled="disabled"
+	<!--<textarea id="output" disabled="disabled"
         style="display: inline-block; height: 480px; width: 28%;">
-    </textarea>
+    </textarea>-->
+	
+	<div
+    style="overflow: scroll; display: inline-block; height: 480px; width: 28%;">
+		<pre id="preId"><code id="output"></code>
+		</pre>
+    </div>
+	
+	
 	<div id="textAreaContainer"
 		style="display: inline-block; height: 480px; width: 20%">
 		<div
 			style="display: table-row; height: 360px; width: 100%">
 			<textarea id="roteiro" disabled="disabled"
-				style="display: block; height: 360px; width: 100%;">
+				style="overflow: auto; display: block; height: 360px; width: 100%;">
 			</textarea>
 		</div>
 		<!--<textarea id="saida" disabled="disabled"
@@ -232,12 +240,14 @@
 			
 	aux = codeLine.search("user.name");
 	if(aux >= 0){
-		stats.userName = codeLine.substring(aux+10);				
+		stats.userName = codeLine.substring(aux+10);
+		r = r+"#Username = "+stats.userName+"\n";
 	}
 	else{
 		aux = codeLine.search("user.email");
 		if(aux >= 0){
-			stats.userEmail = codeLine.substring(aux+11);				
+			stats.userEmail = codeLine.substring(aux+11);	
+			r = r+"#User Email = "+stats.userEmail+"\n";
 		}
 	}
 	
@@ -254,10 +264,11 @@
 	aux = codeLine.search("git init");
 	if(aux >= 0){
 		if(stats.isInit){
-			r = r +"\nAviso! O diretório já foi iniciado!(comando 'git init' dado mais de uma vez ou após um 'git clone')\n"
+			r = r +"#!Aviso! O diretório já foi iniciado!(comando 'git init' dado mais de uma vez ou após um 'git clone')\n"
 			existInit2OrMore = true;
 		}
 		else{
+			r = r+ "#Diretório:"+stats.curDir+" iniciado!\n";
 			existInit = true;
 		}
 	}
@@ -279,7 +290,7 @@
 	aux = codeLine.search("git clone");
 	if(aux >= 0){
 		if(stats.isInit){
-			r = r +"\nAviso! O diretório já foi clonado!(comando 'git clone' dado mais de uma vez ou após um 'git init')\n"
+			r = r +"#!Aviso! O diretório já foi clonado!(comando 'git clone' dado mais de uma vez ou após um 'git init')\n"
 			existClone2OrMore = true;
 			existClone = true;
 			repRemoto = '';
@@ -327,11 +338,11 @@
 				
 				if(idx > -1){
 					if(stats.index[idx].staged == true){
-						r = r+ "\nArquivo: "+files[j]+" Já foi adicionado! (Comando git add repetido!)";
+						r = r+ "#!Arquivo: "+files[j]+" Já foi adicionado! (Comando git add repetido!)\n";
 					}
 					else{
 						stats.index[idx].staged = true;
-						r = r+ "\nArquivo: "+files[j]+" Preparado para ser salvo!";
+						r = r+ "#Arquivo: "+files[j]+" Preparado para ser salvo!\n";
 					}
 				}
 				else{
@@ -349,9 +360,9 @@
 					if( idx > -1){
 						stats.files.splice(idx,1);
 						stats.index.push({filename: files[j], modified: true, staged: true});
-						r = r+ "\nArquivo: "+files[j]+" Adicionado ao Index e preparado para ser salvo!";
+						r = r+ "#Arquivo: "+files[j]+" Adicionado ao Index e preparado para ser salvo!\n";
 					}else{
-						r = r+ "\nArquivo: "+files[j]+" Não encontrado";
+						r = r+ "#!Arquivo: "+files[j]+" Não encontrado\n";
 					}
 	
 					
@@ -362,7 +373,7 @@
 			}
 		}
 		else{
-			r = r+"\nIndique um arquivo válido no git add!";
+			r = r+"#!Indique um arquivo válido no git add!\n";
 		}
 	}
 		
@@ -371,18 +382,12 @@
 	}
 
 	function checkCommit(codeLine){
-		
-		
-		
-		
-		
-		
 		var i;
 		
 		var itsA = false;
 		var itsM = false;
 		var hasM = false;
-		var comment = '\nComentário:';
+		var comment = '#Comentário Salvo:';
 		var r = '';
 		
 		
@@ -425,16 +430,16 @@
 				if (stats.index[i].modified == true && stats.index[i].staged == false){
 					stats.index[i].staged = false;
 					stats.index[i].modified = false;
-					r = r + "\nArquivo: "+stats.index[i].filename+" Indexado e Salvo!";
+					r = r + "#Arquivo: "+stats.index[i].filename+" Indexado e Salvo!\n";
 				}else if(stats.index[i].modified == true && stats.index[i].staged == true){
 					stats.index[i].staged = false;
 					stats.index[i].modified = false;
-					r = r + "\nArquivo: "+stats.index[i].filename+" Salvo!";
+					r = r + "#Arquivo: "+stats.index[i].filename+" Salvo!\n";
 				}
 				else if(stats.index[i].modified == false && stats.index[i].staged == true){
 					stats.index[i].staged = false;
 					stats.index[i].modified = false;
-					r = r + "\nArquivo: "+stats.index[i].filename+" Arquivo já atualizado!";
+					r = r + "#Arquivo: "+stats.index[i].filename+" Arquivo já atualizado!\n";
 				}
 			}
 		}
@@ -443,12 +448,12 @@
 				if(stats.index[i].modified == true && stats.index[i].staged == true){
 					stats.index[i].staged = false;
 					stats.index[i].modified = false;
-					r = r + "\nArquivo: "+stats.index[i].filename+" Salvo!";
+					r = r + "#Arquivo: "+stats.index[i].filename+" Salvo!\n";
 				}
 				else if(stats.index[i].modified == false && stats.index[i].staged == true){
 					stats.index[i].staged = false;
 					stats.index[i].modified = false;
-					r = r + "\nArquivo: "+stats.index[i].filename+" Arquivo já atualizado!";
+					r = r + "#Arquivo: "+stats.index[i].filename+" Arquivo já atualizado!\n";
 				}
 			}
 			
@@ -456,12 +461,12 @@
 	
 	if(stats.index.length < 1){
 		comment = '';
-		r = r+"Nenhum arquivo adicionado, nada a fazer! (Dica: Tente usar -a, ou adicionar arquivos so index usando git add)";
+		r = r+"#!Nenhum arquivo adicionado, nada a fazer! (Dica: Tente usar -a, ou adicionar arquivos so index usando git add)\n";
 	} else if(!hasM){
-		comment = comment +'Na realidade, o Git abriria um editor para que seja adicionado um comentário. (Dica: É mais fácil usar git commit -m "Comentário")';
+		comment = comment +'#Na realidade, o Git abriria um editor para que seja adicionado um comentário. (Dica: É mais fácil usar git commit -m "Comentário")\n';
 	}
 			
-	return(r+'\n'+comment);
+	return(r+comment);
 	}
 	
 	function parseCode(code){
@@ -506,7 +511,7 @@
 				console.log('#Criar');
 			}
 			else{
-				msg = msg+"#Fim do Programa";
+				msg = msg+"Fim do Programa";
 			}
 			
 		}
@@ -516,6 +521,56 @@
 		
 		
 	}
+	
+	function parseMsgToHtml(msgSent){
+		var lines = msgSent.split('\n');
+		var i;
+		var j;
+		
+		var end = false;
+		
+		var startCommandSpan = '<span style="display: inline-block; color: BlueViolet">';
+		
+		var startAttributesSpan = '<span style="display: inline-block; color: Black">';
+		
+		var startCommentSpan = '<span style="display: inline-block; color: Green">';
+		
+		var startWarningSpan = '<span style="display: inline-block; color: Red">';
+		
+		var endSpan = '</span>';
+		
+		debugger;
+		
+		
+		for (i = 0; i<lines.length; i++){
+			var command = lines[i].split(' ');
+			//msg = msg + lines[i] +'\n'
+			if  (command[0].search('git')>=0) {
+			
+				msg = msg + startCommandSpan + command[0] +' '+ command[1]+endSpan+' ';		
+				msg = msg + startAttributesSpan;
+				for(j = 2; j<command.length;j++){
+					msg = msg +' '+ command[j];
+				}
+				msg = msg + endSpan+'\n';
+			}
+			else  if(command[0].search('#!')>=0){
+				msg = msg + startWarningSpan+ lines[i] + endSpan+'\n';
+			}
+			else  if(command[0].search('#')>=0){
+				msg = msg + startCommentSpan+ lines[i] + endSpan+'\n';
+			}
+			else if(!end){//Garante que so é escrito 1 vez
+					end = true;
+					msg = msg +'<span style="display: inline-block; color: Blue">'+"\t#Fim do Programa"+endSpan+'\n';
+			}
+		
+			//msg = msg +'\n'
+		}
+		
+		return(msg);	
+	}
+	
 	
 	//----------------------
 		function verifyCodeAndStats(){
@@ -528,7 +583,7 @@
       var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
       //Trata blocos desconectados
       if(code.search(";")>=0){
-        code = "Existem parâmetros desconectados!";
+        code = "#Existem parâmetros desconectados!";
       }  
       outputArea.value = code;
 	
@@ -537,6 +592,14 @@
 		//Casos de Teste!
 	  //var n = '#Criar arquivoTeste1'
 	  //var o = '#Modificar arquivoTeste1'
+	  
+//	  style ="
+// white-space: pre-wrap;       /* css-3 */
+// white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+// white-space: -pre-wrap;      /* Opera 4-6 */
+// white-space: -o-pre-wrap;    /* Opera 7 */
+// word-wrap: break-word;       /* Internet Explorer 5.5+*/"
+	  
 	  var k = 'git commit -m -a "Comentario Teste!"';
 	  var l = 'git commit -a -m "Comentario Teste!"';
 	  var m = 'git commit -m "Comentario Teste!"';
@@ -558,6 +621,7 @@
 	  var x = 'git config --global user.name gui\ngit config --global user.email upa@teste\ngit init\ngit init'; //name+email+ 2xInit
 	  var y = 'git config --global user.name gui\ngit config --global user.email upa@teste\n'; //name+email
 	  var z = 'git init\n'; //Init
+	  var omega = 'git config --global user.name gui\ngit config --global user.email upa@teste\ngit init\ngit add ArquivoTeste1 ArquivoTeste2\ngit commit -a -m "Comentario Teste!"\n';
 	  
 	//----------------------------------------------
 	
@@ -569,7 +633,9 @@
 	  showStats();
 	  
 	  //outputArea.value = code+msg;
-	  outputArea.value = msg;
+	  //outputArea.value = msg;
+	  msg = parseMsgToHtml(msg);
+	  document.getElementById('output').innerHTML = msg;
     }
 
     function runCode() {
