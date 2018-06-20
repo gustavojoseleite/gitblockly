@@ -27,37 +27,49 @@
   </style>
 </head>
 <body>
-  <h1>Blockly Git</h1>
+  <h1 style="margin: auto;">Blockly Git v.Alpha</h1>
 
-  <p>Esse é um simples gerador interativo de códigos para Git. Com ele é possível praticar os principais comandos do Git através da ferramenta Blockly. O aprendizado é baseado no agrupamento de blocos de modo a ter uma sintaxe válida para comandos utilizados no Git. Além disso, o usuário pode visualizar maiores informações a respeito do comando ou opção posicionando o cursor sobre o bloco. Por fim, ao término da junção dos blocos, basta clicar sobre o botão Gerar e um código correspondente aos blocos é gerado para que possa ser utilizado no próprio Git. </p>
+  <p>Bem vindo ao Blockly Git! Uma plataforma de ensino e teste de Git! Siga as missões e aprenda a usar o Git!</p>
+  <pre>Para os blocos:
+  config, init e clone -> Aba "Para repositorios"
+  add e clone -> Aba "Sobre repositorios"
+  Variáveis -> Aba "Outras opções" </pre>
+  
 
 
 
-  <div style="width: 100%">
+  <div style="width: 100% ">
     <div id="blocklyDiv"
-        style="display: inline-block; height: 480px; width: 48%"></div>
+        style="display: inline-block; height: 480px; width: 49%"></div>
 	<!--<textarea id="output" disabled="disabled"
         style="display: inline-block; height: 480px; width: 28%;">
     </textarea>-->
 	
 	<div
-    style="overflow: scroll; display: inline-block; height: 480px; width: 28%;">
-		<pre id="preId"><code id="output"></code>
-		</pre>
-    </div>
+    style="display: inline-block; height: 480px; width: 35%; ">
+    
+		<div
+		style="overflow: scroll; height: 96%; width: 100%;">
+		<pre id="preId"><code id="output"></code></pre>
+		</div>
+		
+			<div style="display:flex;justify-content:center;align-items:center;padding-top: 1%;">
+				<input type="button" title="Voltar missão!" onclick="showCode()" value="<<" style="margin-right: auto;width: 100px;height: 28px;">
+				<input type="button" title="Gerar e Testar o código!" onclick="showCode()" value="Gerar" style="margin-left: auto;margin-right: auto;width: 100px;height: 28px;">
+				<input type="button" title="Próxima Missão!" onclick="showCode()" value=">>" style="margin-left: auto;width: 100px;height: 28px;">
+			</div>
+	</div>
 	
 	
 	<div id="textAreaContainer"
-		style="display: inline-block; height: 480px; width: 20%">
-		<div
+		style="display: inline-block; height: 480px; width: 15%">
+		<!--<div
 			style="display: table-row; height: 360px; width: 100%">
 			<textarea id="roteiro" disabled="disabled"
 				style="overflow: auto; display: block; height: 360px; width: 100%;">
 			</textarea>
 		</div>
-		<!--<textarea id="saida" disabled="disabled"
-			style="display: table-row; height: 120px; width: 100%;">
-		</textarea>-->
+		-->
 		<div
 			style="display: table-row; height: 100%; width: 100%">
 		<code contenteditable="false">
@@ -73,12 +85,6 @@
 			
 		</code>
 		</div>
-	</div>
-  </div>
-  
-  <div style="width: 48%">
-	<div style="float: right;">
-		<input type="button" onclick="showCode()" value="Gerar"></input>
 	</div>
   </div>
 
@@ -161,7 +167,7 @@
                                demoWorkspace);
     var outputArea = document.getElementById('output');
 
-    var outputRoteiro = document.getElementById('roteiro');
+    //var outputRoteiro = document.getElementById('roteiro');
 	
 	
 	
@@ -188,7 +194,7 @@
     
 	
 	function showMission() {
-    	outputRoteiro.value = "Um teste de texto de um roteiro!!!";	
+    	//outputRoteiro.value = "Um teste de texto de um roteiro!!!";	
     	// body...
     }
 	
@@ -309,9 +315,6 @@
 		
 	function checkAdd(codeLine) {
 	
-	var existInit = false;
-	var existInit2OrMore = false;
-
 	var files;
 	var aux = -1;
 	
@@ -321,7 +324,7 @@
 	var r = '';
 	
 	var idx;
-	//debugger;
+	debugger;
 
 	
 	aux = codeLine.search("git add");
@@ -377,7 +380,6 @@
 		}
 	}
 		
-		//stats.isInit = (existInit && !(existInit2OrMore));
 	return(r);
 	}
 
@@ -468,6 +470,115 @@
 			
 	return(r+comment);
 	}
+
+	function checkModify(codeLine){
+	var files;
+	var aux = -1;
+	
+	
+	var j;
+	
+	var r = '';
+	
+	var idx;
+	debugger;
+
+	
+	aux = codeLine.search("#Modificar");
+	if(aux >= 0){
+		files = codeLine.split(' ');
+		if(files.length>1){
+			for(j = 1; j<files.length;j++){
+			
+				//Verifica se já indexado e preparado:
+				idx = stats.index.findIndex((elem) => {
+				return(files[j] === elem.filename);
+				});
+				
+				if(idx > -1){
+					if(stats.index[idx].staged == true){
+						r = r+ "#!Cuidado, Faça um novo git add!!! Arquivo: "+files[j]+" Já tinha sido preparado por um git add, no mundo real apenas as modificações feitas até aquele git add seriam salvas com um git commit! Arquivo retirado não preparado para salvar\n";
+						stats.index[idx].modified = true;
+						stats.index[idx].staged = false;
+					}
+					else{
+						stats.index[idx].modified = true;
+						r = r+ "#Arquivo: "+files[j]+" Modificado!\n";
+					}
+				}
+				else{
+					//------
+					//Verifica se existe o arquivo...
+					//-------
+					
+					idx = -1;
+					
+					idx = stats.files.findIndex((elem) => {
+					return(files[j] === elem.filename);
+					});
+				
+					if( idx < 0){
+						r = r+ "#!Arquivo: "+files[j]+" Não Existe!\n";
+					}else{
+						r = r+ "#Arquivo: "+files[j]+" Modificado!\n";
+					}
+				}
+			}
+				
+		}else{
+			r = r+"#!Escolha ao um arquivo para ser modificado!\n";
+		}
+	}
+	
+	return(r);
+	}
+	
+	function checkCreate(codeLine){
+	
+	var files;
+	var aux = -1;
+	
+	
+	var j;
+	
+	var r = '';
+	
+	var idx;
+	debugger;
+
+	
+	aux = codeLine.search("#Criar");
+	if(aux >= 0){
+		files = codeLine.split(' ');
+		if(files.length>1){
+			for(j = 1; j<files.length;j++){
+				//Verifica se já existe
+				
+				idx = -1;
+				
+				idx = stats.files.findIndex((elem) => {
+				return(files[j] === elem.filename);
+				});
+				//E o adiciona ao index...
+				if( idx > -1){
+					r = r+ "#!Arquivo: "+files[j]+" já existe\n";
+					
+				}else{
+					stats.files.push({filename: files[j]});
+					r = r+ "#Arquivo: "+files[j]+" Criado!\n";
+					
+				}
+			}
+				
+		}else{
+			r = r+"#!Escolha um nome para Criar o Arquivo!\n";
+		}
+	}
+	
+	
+		
+	return(r);
+	}
 	
 	function parseCode(code){
 		var lines = code.split('\n');
@@ -505,10 +616,10 @@
 				}
 			}
 			else  if(command[0].search('#Modificar')>=0){
-				console.log('#Modificar');
+				msg = msg+checkModify(lines[i]);
 			}
 			else  if(command[0].search('#Criar')>=0){
-				console.log('#Criar');
+				msg = msg+checkCreate(lines[i]);
 			}
 			else{
 				msg = msg+"Fim do Programa";
@@ -539,7 +650,7 @@
 		
 		var endSpan = '</span>';
 		
-		debugger;
+		//debugger;
 		
 		
 		for (i = 0; i<lines.length; i++){
@@ -590,16 +701,10 @@
 	
 	//---------------------------------------
 		//Casos de Teste!
-	  //var n = '#Criar arquivoTeste1'
-	  //var o = '#Modificar arquivoTeste1'
-	  
-//	  style ="
-// white-space: pre-wrap;       /* css-3 */
-// white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-// white-space: -pre-wrap;      /* Opera 4-6 */
-// white-space: -o-pre-wrap;    /* Opera 7 */
-// word-wrap: break-word;       /* Internet Explorer 5.5+*/"
-	  
+	  var g = '#Criar arquivoTeste1'
+	  var h = '#Criar arquivoTeste1\n#Criar arquivoTeste2\n#Modificar arquivoTeste1\n#Modificar arquivoTeste2\n'
+	  //i..
+	  //j..
 	  var k = 'git commit -m -a "Comentario Teste!"';
 	  var l = 'git commit -a -m "Comentario Teste!"';
 	  var m = 'git commit -m "Comentario Teste!"';
@@ -613,7 +718,7 @@
 	  var s = 'git add ArquivoTeste1 ArquivoTeste2\n';
 	  var t = 'git add ArquivoTeste1\n';
 	  
-	  stats.files = [{filename: "ArquivoTeste1"}, {filename: "ArquivoTeste2"}];
+	  //stats.files = [{filename: "ArquivoTeste1"}, {filename: "ArquivoTeste2"}];
 	  
 	  var u = 'git clone gitTest.com/repo\ngit clone gitTest.com/repo2\n'; //2x clone
 	  var v = 'git init\ngit clone gitTest.com/repo\n'; //Init + Clone
@@ -621,15 +726,15 @@
 	  var x = 'git config --global user.name gui\ngit config --global user.email upa@teste\ngit init\ngit init'; //name+email+ 2xInit
 	  var y = 'git config --global user.name gui\ngit config --global user.email upa@teste\n'; //name+email
 	  var z = 'git init\n'; //Init
-	  var omega = 'git config --global user.name gui\ngit config --global user.email upa@teste\ngit init\ngit add ArquivoTeste1 ArquivoTeste2\ngit commit -a -m "Comentario Teste!"\n';
+	  var omega = 'git config --global user.name gui\ngit config --global user.email upa@teste\ngit init\n#Criar ArquivoTeste1\n#Criar ArquivoTeste2\ngit add ArquivoTeste1 ArquivoTeste2\ngit commit -a -m "Comentario Teste!"\n#Modificar ArquivoTeste1\n#Modificar ArquivoTeste2\ngit commit -a -m "Comentario Teste2!"\n';
 	  
 	//----------------------------------------------
 	
 	  var msg = '';
 	  
-	  msg = parseCode(code);
+	  msg = parseCode(omega);
 	  
-	  showMission();
+	  //showMission();
 	  showStats();
 	  
 	  //outputArea.value = code+msg;
