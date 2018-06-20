@@ -19,7 +19,7 @@ Blockly.defineBlocksWithJsonArray([
 Blockly.JavaScript['initi'] = function(block) {
   var subString = Blockly.JavaScript.valueToCode(block, "path", Blockly.JavaScript.ORDER_ADDITION) || '0';
   if(subString==0){
-    return "O bloco 'init' necessita de parâmetros.";
+    return "O bloco 'init' precisa ter conexões.";
   }
   else{
     var code = "git init " + subString;

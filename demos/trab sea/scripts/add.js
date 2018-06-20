@@ -22,7 +22,7 @@ Blockly.defineBlocksWithJsonArray([
 Blockly.JavaScript['add'] = function(block) {
   var subString = Blockly.JavaScript.valueToCode(block,"path", Blockly.JavaScript.ORDER_ADDITION) || '0'
   if(subString==0){
-    return "O bloco 'add' necessita de parâmetros.";
+    return "O bloco 'add' precisa ter conexões.";
   }
   else{
     var code = "git add " + subString;
@@ -70,10 +70,13 @@ Blockly.defineBlocksWithJsonArray([
     {
       "type": "input_value",
       "name": "NAME",
-      "check": "arq"
+      "check": [
+        "arquivo",
+        "arq"
+      ]
     }
   ],
-  "output": "arq",
+  "output": "arquivo",
   "colour": 135,
   "tooltip": "Informe o nome de um dos arquivos que deseja adicionar",
   "helpUrl": ""
@@ -88,6 +91,66 @@ Blockly.JavaScript['arquivo'] = function(block) {
   }
   else{
     var code = text + " " + subString;
+    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  }
+};
+
+Blockly.defineBlocksWithJsonArray([
+{
+  "type": "criar_arquivo",
+  "message0": "Criar arquivo %1",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "NAME",
+      "check": "arq"
+    }
+  ],
+  "colour": 135,
+  "tooltip": "Simula a criação de um arquivo no repositório atual, em um ambiente real você teria que criar um arquivo da forma que o sistema que está utilizando permite! Esta é apenas uma simulação desse evento! (O arquivo criado pode ser adicionado ao index usando git add, veja!).",
+  "helpUrl": ""
+}
+]);
+
+Blockly.JavaScript['criar_arquivo'] = function(block) {
+  var subString = Blockly.JavaScript.valueToCode(block,'NAME', Blockly.JavaScript.ORDER_ADDITION) || '0';
+  if(subString==0){
+    return "O bloco 'Criar arquivo' precisa ter conexões.";
+  }
+  else{
+    var code = "#Criado: " + subString;
+    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  }
+};
+
+
+Blockly.defineBlocksWithJsonArray([
+{
+  "type": "modificar_arquivo",
+  "message0": "Modificar arquivo %1",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "NAME",
+      "check": [
+        "arquivo",
+        "arq"
+      ]
+    }
+  ],
+  "colour": 135,
+  "tooltip": "Simula a modificação de arquivos no repositório atual, em um ambiente real você teria que modificar os arquivos usando o seu editor preferido! Esta é apenas uma simulação desse evento! (Os arquivo criados podem ser adicionados ao index usando git add ou preparados para serem salvos usando também o git add ou git commit -a, veja!).",
+  "helpUrl": ""
+}
+]);
+
+Blockly.JavaScript['modificar_arquivo'] = function(block) {
+  var subString = Blockly.JavaScript.valueToCode(block,'NAME', Blockly.JavaScript.ORDER_ADDITION) || '0';
+  if(subString==0){
+    return "O bloco 'Modificar arquivo' precisa ter conexões.";
+  }
+  else{
+    var code = "#Modificado: " + subString;
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
   }
 };

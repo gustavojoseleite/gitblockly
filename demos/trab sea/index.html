@@ -106,6 +106,8 @@
       <block type="arq"></block>
       <block type="diretório"></block>
       <block type="nome_email"></block>
+      <block type="criar_arquivo"></block>
+      <block type="modificar_arquivo"></block>
     </category>
   </xml>
   <xml id="startBlocks" style="display: none">
@@ -694,9 +696,10 @@
       var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
       //Trata blocos desconectados
       if(code.search(";")>=0){
-        code = "#Existem parâmetros desconectados!";
+        code = "#Existem blocos desconectados!";
       }  
       outputArea.value = code;
+      window.alert(code);
 	
 	
 	//---------------------------------------
