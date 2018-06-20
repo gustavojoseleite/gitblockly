@@ -14,12 +14,16 @@ Blockly.defineBlocksWithJsonArray([
         [
           "-m",
           "-m"
+        ],
+        [
+          "-a -m",
+          "-a -m"
         ]
       ]
     },
     {
       "type": "input_statement",
-      "name": "path",
+      "name": "NAME",
       "check": "comentario"
     }
   ],
@@ -31,7 +35,7 @@ Blockly.defineBlocksWithJsonArray([
 
 Blockly.JavaScript['commit'] = function(block) {
   var dropdown_name = block.getFieldValue('NAME');
-  var subString = Blockly.JavaScript.valueToCode(block, 'path', Blockly.JavaScript.ORDER_ADDITION) || '0';
+  var subString = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ADDITION) || '0';
   //var statements_path = Blockly.JavaScript.statementToCode(block, 'path');
 
   subString = subString.replace(';','');
@@ -40,15 +44,24 @@ Blockly.JavaScript['commit'] = function(block) {
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
   }
   else if (dropdown_name=="-a" && subString!=0){
-  	var code = "A opção '-a' não necessita de um parâmetro"
+  	var code = "A opção '-a' não precisa ter conexões."
   	return [code, Blockly.JavaScript.ORDER_ATOMIC];
   }
 
   if(dropdown_name=="-m" && subString==0){
-  	var code = "A opção '-m' necessita de um bloco de comentário"
+  	var code = "A opção '-m' precisa ter conexões."
   	return [code, Blockly.JavaScript.ORDER_ATOMIC];
   }
   else if (dropdown_name=="-m" && subString!=0){
+    var code = "git commit " + dropdown_name + " \"" + subString + "\""; // " " + dropdown_tipo_entrada + " " + subString;
+    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  }
+
+  if(dropdown_name=="-a -m" && subString==0){
+    var code = "A opção '-a -m' precisa ter conexões."
+    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  }
+  else if (dropdown_name=="-a -m" && subString!=0){
     var code = "git commit " + dropdown_name + " \"" + subString + "\""; // " " + dropdown_tipo_entrada + " " + subString;
     return [code, Blockly.JavaScript.ORDER_ATOMIC];
   }
