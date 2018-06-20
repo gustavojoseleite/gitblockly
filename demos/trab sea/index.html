@@ -54,7 +54,7 @@
 		</div>
 		
 			<div style="display:flex;justify-content:center;align-items:center;padding-top: 1%;">
-				<input type="button" title="Voltar missão!" onclick="showCode()" value="<<" style="margin-right: auto;width: 100px;height: 28px;">
+				<input type="button" title="Voltar missão!" onclick="zerarTudo()" value="<<" style="margin-right: auto;width: 100px;height: 28px;">
 				<input type="button" title="Gerar e Testar o código!" onclick="showCode()" value="Gerar" style="margin-left: auto;margin-right: auto;width: 100px;height: 28px;">
 				<input type="button" title="Próxima Missão!" onclick="showCode()" value=">>" style="margin-left: auto;width: 100px;height: 28px;">
 			</div>
@@ -193,7 +193,26 @@
 	
 	
 	//------------------------------------------------------
-    
+    function zerarTudo(){
+	
+	debugger;
+	
+	stats.curDir = '/home';
+	stats.isInit = false;
+	stats.userName = '';
+	stats.userEmail = '';
+	stats.branch = '';
+	stats.repRemoto = '';
+	stats.index = [];
+	stats.files = [];
+	stats.valid = false;
+	
+	var saida = document.getElementById('output');
+	while (saida.firstChild) saida.removeChild(saida.firstChild);
+	msg = '';
+	
+	
+	}
 	
 	function showMission() {
     	//outputRoteiro.value = "Um teste de texto de um roteiro!!!";	
@@ -363,7 +382,7 @@
 				
 					//E o adiciona ao index...
 					if( idx > -1){
-						stats.files.splice(idx,1);
+						//stats.files.splice(idx,1);
 						stats.index.push({filename: files[j], modified: true, staged: true});
 						r = r+ "#Arquivo: "+files[j]+" Adicionado ao Index e preparado para ser salvo!\n";
 					}else{
@@ -486,7 +505,7 @@
 	debugger;
 
 	
-	aux = codeLine.search("#Modificar");
+	aux = codeLine.search("#Modificado:");
 	if(aux >= 0){
 		files = codeLine.split(' ');
 		if(files.length>1){
@@ -549,7 +568,7 @@
 	debugger;
 
 	
-	aux = codeLine.search("#Criar");
+	aux = codeLine.search("#Criado:");
 	if(aux >= 0){
 		files = codeLine.split(' ');
 		if(files.length>1){
@@ -617,10 +636,10 @@
 						break;
 				}
 			}
-			else  if(command[0].search('#Modificar')>=0){
+			else  if(command[0].search('#Modificado:')>=0){
 				msg = msg+checkModify(lines[i]);
 			}
-			else  if(command[0].search('#Criar')>=0){
+			else  if(command[0].search('#Criado:')>=0){
 				msg = msg+checkCreate(lines[i]);
 			}
 			else{
@@ -691,15 +710,20 @@
 	}
 	
     function showCode() {
+	
+	  var alert = false;
+	  var msg = '';
       // Generate JavaScript code and display it.
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
       var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
       //Trata blocos desconectados
       if(code.search(";")>=0){
-        code = "#Existem blocos desconectados!";
+		alert = true;
+        msg = "#!Existem blocos desconectados!";
+		window.alert(msg);
       }  
-      outputArea.value = code;
-      window.alert(code);
+      
+      
 	
 	
 	//---------------------------------------
@@ -729,17 +753,17 @@
 	  var x = 'git config --global user.name gui\ngit config --global user.email upa@teste\ngit init\ngit init'; //name+email+ 2xInit
 	  var y = 'git config --global user.name gui\ngit config --global user.email upa@teste\n'; //name+email
 	  var z = 'git init\n'; //Init
-	  var omega = 'git config --global user.name gui\ngit config --global user.email upa@teste\ngit init\n#Criar ArquivoTeste1\n#Criar ArquivoTeste2\ngit add ArquivoTeste1 ArquivoTeste2\ngit commit -a -m "Comentario Teste!"\n#Modificar ArquivoTeste1\n#Modificar ArquivoTeste2\ngit commit -a -m "Comentario Teste2!"\n';
+	  var omega = 'git config --global user.name gui\ngit config --global user.email upa@teste\ngit init\n#Criado: ArquivoTeste1\n#Criado: ArquivoTeste2\ngit add ArquivoTeste1 ArquivoTeste2\ngit commit -a -m "Comentario Teste!"\n#Modificado: ArquivoTeste1\n#Modificado: ArquivoTeste2\ngit commit -a -m "Comentario Teste2!"\n';
 	  
 	//----------------------------------------------
 	
-	  var msg = '';
-	  
+	msg = '';
+	if(!alert){
 	  msg = parseCode(omega);
 	  
 	  //showMission();
 	  showStats();
-	  
+	  }
 	  //outputArea.value = code+msg;
 	  //outputArea.value = msg;
 	  msg = parseMsgToHtml(msg);
