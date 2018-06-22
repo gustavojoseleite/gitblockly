@@ -27,18 +27,10 @@
   </style>
 </head>
 <body>
-  <h1 style="margin: auto;">Blockly Git v.Alpha</h1>
-
-  <p>Bem vindo ao Blockly Git! Uma plataforma de ensino e teste de Git! Siga as missões e aprenda a usar o Git!</p>
-  <pre>Para os blocos:
-  config, init e clone -> Aba "Para repositorios"
-  add e clone -> Aba "Sobre repositorios"
-  Variáveis -> Aba "Outras opções" </pre>
-  
+  <h1 style="text-align: center;">Blockly Git v.Alpha</h1>
 
 
-
-  <div style="width: 100% ">
+  <div style="padding-top: 1em; width: 100% ">
     <div id="blocklyDiv"
         style="display: inline-block; height: 480px; width: 49%"></div>
 	<!--<textarea id="output" disabled="disabled"
@@ -74,14 +66,15 @@
 			style="display: table-row; height: 100%; width: 100%">
 		<code contenteditable="false">
 			<div id="statsDiv"><span id="val" style="display: inline-block; color: blue">Variáveis</span></div>
-			<div id="statsDiv0">Dir: <span style="color: green">"bar"</span></div>
-			<div id="statsDiv1">User Name: <span style="color: green">"bar"</span></div>
-			<div id="statsDiv2">User Email: <span style="color: green">"bar"</span></div>
-			<div id="statsDiv3">Rep. Iniciado: <span style="color: green">"bar"</span></div>
-			<div id="statsDiv4">foo = <span style="display: inline-block; color: green">"bar"</span></div>
-			<!--<div id="statsDiv5"><span id="val50" style="display: inline-block; color: blue"></span></div>
-			<div id="statsDiv6"><span id="val60" style="display: inline-block; color: blue"></span></div>
-			-->
+			<div id="statsDiv0">Diretório: <span style="color: green">Nda</span></div>
+			<div id="statsDiv1">Username: <span style="color: green">Nda</span></div>
+			<div id="statsDiv2">User Email: <span style="color: green">Nda</span></div>
+			<div id="statsDiv3">Rep. Iniciado: <span style="color: green">Nda</span></div>
+			<div id="statsDiv4">Rep. Remoto: <span style="display: inline-block; color: green">Nda</span></div>
+			<div id="statsDiv5">Index: <span id="val50" style="display: inline-block; color: green">Nda</span></div>
+			<div id="statsDiv6">Arquivos: <span id="val60" style="display: inline-block; color: green">Nda</span></div>
+			<div id="statsDiv7"><span id="val60" style="display: inline-block; color: green"></span></div>
+			
 			
 		</code>
 		</div>
@@ -167,10 +160,7 @@
          toolbox: document.getElementById('toolbox')});
     Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),
                                demoWorkspace);
-    var outputArea = document.getElementById('output');
-
-    //var outputRoteiro = document.getElementById('roteiro');
-	
+    //var outputArea = document.getElementById('output');	
 	
 	
 	var outputSaida = document.getElementById('saida');
@@ -179,12 +169,14 @@
 	var stats = {
 	curDir: '/home',
 	isInit: false,
-	userName: '',
-	userEmail: '',
-	branch: '',
-	repRemoto: '',
+	userName: 'Nda',
+	userEmail: 'Nda',
+	branch: 'Nda',
+	repRemoto: 'Nda',
 	index: [], //{filename: "", modified: false, staged: false}
 	files: [], //{filename: ""}
+	missionMsg: '---------------------------//---------------------------',
+	missionN: 0,
 	valid: false};
 	
 	var msg = '';
@@ -195,7 +187,7 @@
 	//------------------------------------------------------
     function zerarTudo(){
 	
-	debugger;
+	//debugger;
 	
 	stats.curDir = '/home';
 	stats.isInit = false;
@@ -214,9 +206,9 @@
 	
 	}
 	
-	function showMission() {
-    	//outputRoteiro.value = "Um teste de texto de um roteiro!!!";	
-    	// body...
+	function msgMission() {
+    	
+		return('<span style="display: inline-block; color: Black">'+ stats.missionMsg+ '</span>'+'\n');
     }
 	
 	function showStats(){
@@ -236,11 +228,30 @@
 		var div6 = document.getElementById('statsDiv6');
 		var div7 = document.getElementById('statsDiv7');
 		
-		div0.innerHTML = 'Dir: <span style="display: inline-block; color: green">'+stats.curDir+'</span>';
-		div1.innerHTML = 'User Name: <span style="display: inline-block; color: green">'+stats.userName+'</span>';
-		div2.innerHTML = 'User Email: <span style="display: inline-block; color: green">'+stats.userEmail+'</span>';
-		div3.innerHTML = 'Rep. Iniciado: <span style="display: inline-block; color: green">'+((stats.isInit)?'Sim':'Não')+'</span>';
-		div4.innerHTML = 'Rep. Remoto: <span style="display: inline-block; color: green">'+stats.repRemoto+'</span>';
+		var varSpan = '<span style="display: inline-block; color: green">';
+		
+		div0.innerHTML = 'Dir: '+varSpan+stats.curDir+'</span>';
+		div1.innerHTML = 'Username: '+varSpan+stats.userName+'</span>';
+		div2.innerHTML = 'User Email: '+varSpan+stats.userEmail+'</span>';
+		div3.innerHTML = 'Rep. Iniciado: '+varSpan+((stats.isInit)?'Sim':'Não')+'</span>';
+		div4.innerHTML = 'Rep. Remoto: '+varSpan+stats.repRemoto+'</span>';
+		
+		
+		var spanIndex = '';
+		var i;
+		for(i = 0; i < stats.index.length;i++){
+			spanIndex = spanIndex +varSpan+'\t'+(i+1)+'. '+ stats.index[i].filename + ' - Modificado? ' + ((stats.files[i].modified)?'Sim':'Não') +'</span>';
+		}
+		
+		div5.innerHTML = 'Index: '+	spanIndex;
+		
+		var spanFile = '';
+		var i;
+		for(i = 0; i < stats.files.length;i++){
+			spanFile = spanFile +varSpan+'\t'+(i+1)+'. '+ stats.files[i].filename +'</span>';
+		}
+		
+		div6.innerHTML = 'Arquivos: '+	spanFile;
 	}
 	
 	function checkComand(codeLines, comand){
@@ -265,16 +276,22 @@
 	
 	var r = ''
 			
+	//debugger;		
+			
 	aux = codeLine.search("user.name");
 	if(aux >= 0){
+
 		stats.userName = codeLine.substring(aux+10);
 		r = r+"#Username = "+stats.userName+"\n";
+		
 	}
 	else{
 		aux = codeLine.search("user.email");
 		if(aux >= 0){
+	
 			stats.userEmail = codeLine.substring(aux+11);	
 			r = r+"#User Email = "+stats.userEmail+"\n";
+
 		}
 	}
 	
@@ -345,7 +362,7 @@
 	var r = '';
 	
 	var idx;
-	debugger;
+	//debugger;
 
 	
 	aux = codeLine.search("git add");
@@ -484,7 +501,7 @@
 	
 	if(stats.index.length < 1){
 		comment = '';
-		r = r+"#!Nenhum arquivo adicionado, nada a fazer! (Dica: Tente usar -a, ou adicionar arquivos so index usando git add)\n";
+		r = r+"#!Nenhum arquivo salvo, o Index está vazio! (Dica: Tente usar -a, ou adicionar arquivos ao index usando git add)\n";
 	} else if(!hasM){
 		comment = comment +'#Na realidade, o Git abriria um editor para que seja adicionado um comentário. (Dica: É mais fácil usar git commit -m "Comentário")\n';
 	}
@@ -502,7 +519,7 @@
 	var r = '';
 	
 	var idx;
-	debugger;
+	//debugger;
 
 	
 	aux = codeLine.search("#Modificado:");
@@ -565,7 +582,7 @@
 	var r = '';
 	
 	var idx;
-	debugger;
+	//debugger;
 
 	
 	aux = codeLine.search("#Criado:");
@@ -643,7 +660,9 @@
 				msg = msg+checkCreate(lines[i]);
 			}
 			else{
-				msg = msg+"Fim do Programa";
+				//debugger;
+				if(lines[i].length>0)
+					msg = msg+'#!'+lines[i]+'\n';
 			}
 			
 		}
@@ -673,6 +692,10 @@
 		
 		//debugger;
 		
+		msg = msgMission() + msg;
+		
+		
+		
 		
 		for (i = 0; i<lines.length; i++){
 			var command = lines[i].split(' ');
@@ -687,19 +710,20 @@
 				msg = msg + endSpan+'\n';
 			}
 			else  if(command[0].search('#!')>=0){
-				msg = msg + startWarningSpan+ lines[i] + endSpan+'\n';
+				msg = msg + startWarningSpan+'#'+lines[i].slice(2) + endSpan+'\n';
 			}
 			else  if(command[0].search('#')>=0){
 				msg = msg + startCommentSpan+ lines[i] + endSpan+'\n';
 			}
 			else if(!end){//Garante que so é escrito 1 vez
 					end = true;
-					msg = msg +'<span style="display: inline-block; color: Blue">'+"\t#Fim do Programa"+endSpan+'\n';
+					
 			}
 		
 			//msg = msg +'\n'
 		}
 		
+		msg = msg +'<span style="display: inline-block; color: Blue">'+"\t#Fim do Programa"+endSpan+'\n';
 		return(msg);	
 	}
 	
@@ -711,16 +735,19 @@
 	
     function showCode() {
 	
+	  zerarTudo()
+	
 	  var alert = false;
 	  var msg = '';
-      // Generate JavaScript code and display it.
+	  //debugger;
+      // Generate Git code and display it.
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
       var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
       //Trata blocos desconectados
       if(code.search(";")>=0){
 		alert = true;
         msg = "#!Existem blocos desconectados!";
-		window.alert(msg);
+		window.alert("Existem blocos desconectados!");
       }  
       
       
@@ -735,18 +762,13 @@
 	  var k = 'git commit -m -a "Comentario Teste!"';
 	  var l = 'git commit -a -m "Comentario Teste!"';
 	  var m = 'git commit -m "Comentario Teste!"';
-	  var n = 'git commit -a';
-	  //stats.index = [{filename: "ArquivoTeste1", modified: false, staged: false}, {filename: "ArquivoTeste2", modified: false, staged: true}, {filename: "ArquivoTeste3", modified: true, staged: false}, {filename: "ArquivoTeste4", modified: true, staged: true}];
-	  
+	  var n = 'git commit -a';	  
 	  var o = 'git commit';
       var p = 'git init\ngit clone gitTest.com/repo\ngit init\n';		
 	  var q = 'git add ArquivoTeste1 ArquivoTeste1 ArquivoTeste2\n';
 	  var r = 'git add ArquivoTeste1 ArquivoTeste1\n';	
 	  var s = 'git add ArquivoTeste1 ArquivoTeste2\n';
-	  var t = 'git add ArquivoTeste1\n';
-	  
-	  //stats.files = [{filename: "ArquivoTeste1"}, {filename: "ArquivoTeste2"}];
-	  
+	  var t = 'git add ArquivoTeste1\n';	  
 	  var u = 'git clone gitTest.com/repo\ngit clone gitTest.com/repo2\n'; //2x clone
 	  var v = 'git init\ngit clone gitTest.com/repo\n'; //Init + Clone
 	  var w = 'git clone gitTest.com/repo\n'; //Clone
@@ -757,7 +779,7 @@
 	  
 	//----------------------------------------------
 	
-	msg = '';
+	
 	if(!alert){
 	  msg = parseCode(code);
 	  
