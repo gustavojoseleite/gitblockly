@@ -10,7 +10,8 @@
   <script src="../../msg/js/en.js"></script>
   
   <script src="codeParser.js"></script>
-
+  <link rel="stylesheet" type="text/css" href="modalStyle.css">
+  
   <script src="scripts/clone.js"></script>
   <script src="scripts/initi.js"></script>
   <script src="scripts/add.js"></script>
@@ -32,7 +33,7 @@
   <h1 style="text-align: center;">Blockly Git v.Alpha</h1>
 
 
-  <div style="padding-top: 1em; width: 100% ">
+  <div style="width: 100% ">
     <div id="blocklyDiv"
         style="display: inline-block; height: 480px; width: 49%"></div>
 	<!--<textarea id="output" disabled="disabled"
@@ -48,9 +49,13 @@
 		</div>
 		
 			<div style="display:flex;justify-content:center;align-items:center;padding-top: 1%;">
-				<input type="button" title="Voltar missão!" onclick="zerarTudo()" value="<<" style="margin-right: auto;width: 100px;height: 28px;">
+				
+				<a class="btn" style="cursor: pointer;" onclick="showCode();"><<</a>
+				<a class="btn" style="cursor: pointer;" onclick="showCode();">Gerar</a>
+				<a class="btn" style="cursor: pointer;" onclick="showCode();">>></a>
+				<!--<input type="button" title="Voltar missão!" onclick="zerarTudo()" value="<<" style="margin-right: auto;width: 100px;height: 28px;">
 				<input type="button" title="Gerar e Testar o código!" onclick="showCode()" value="Gerar" style="margin-left: auto;margin-right: auto;width: 100px;height: 28px;">
-				<input type="button" title="Próxima Missão!" onclick="showCode()" value=">>" style="margin-left: auto;width: 100px;height: 28px;">
+				<input type="button" title="Próxima Missão!" onclick="showCode()" value=">>" style="margin-left: auto;width: 100px;height: 28px;">-->
 			</div>
 	</div>
 	
@@ -82,6 +87,26 @@
 		</div>
 	</div>
   </div>
+
+<div class="container">
+  <div class="interior">
+    <a class="btn" href="#open-modal">Ajuda!</a>
+  </div>
+</div>
+<div id="open-modal" class="modal-window">
+  <div>
+    <a href="#modal-close" title="Close" class="modal-close">Close</a>
+    <h1>Olá!</h1>
+    <div>
+	<span >Como Usar:</span>
+<span class="modal-span">Na tela à sua esquerda você coloca os seus blocos: Clique nas abas em baixo de Comandos, nelas estão os blocos! Clique/Arraste-os para usá-los!</span>
+<span class="modal-span">A tela à sua direita é apresentada a missão que você deve seguir: Quando terminar de montar os blocos, clique em "Gerar" para verificar seu código.</span>
+<span class="modal-span">"<<" e ">>" navegam pelas missões.</span>
+<span style="display: block;"></span>
+<span style="display: block;">Siga as missões apresentadas e aprenda a usar Git!</span>
+	</div>
+    </div>
+</div>
 
   <xml id="toolbox" style="display: none">
     <category name="COMANDOS" colour="210">...</category>
