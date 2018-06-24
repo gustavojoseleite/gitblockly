@@ -50,9 +50,9 @@
 		
 			<div style="display:flex;justify-content:center;align-items:center;padding-top: 1%;">
 				
-				<a class="btn" style="cursor: pointer;" onclick="showCode();"><<</a>
+				<a class="btn" style="cursor: pointer;" onclick="previousMission();"><<</a>
 				<a class="btn" style="cursor: pointer;" onclick="showCode();">Gerar</a>
-				<a class="btn" style="cursor: pointer;" onclick="showCode();">>></a>
+				<a class="btn" style="cursor: pointer;" onclick="nextMission();">>></a>
 				<!--<input type="button" title="Voltar missão!" onclick="zerarTudo()" value="<<" style="margin-right: auto;width: 100px;height: 28px;">
 				<input type="button" title="Gerar e Testar o código!" onclick="showCode()" value="Gerar" style="margin-left: auto;margin-right: auto;width: 100px;height: 28px;">
 				<input type="button" title="Próxima Missão!" onclick="showCode()" value=">>" style="margin-left: auto;width: 100px;height: 28px;">-->
@@ -209,8 +209,90 @@
 	showStats();
     
 	//----------------------
-	function verifyCodeAndStats(){
+	function nextMission(){
 		
+		if (stats.missionNumber >1){
+			stats.missionNumber = 2;
+		}
+		else{
+			stats.missionNumber = stats.missionNumber +1;
+		}
+		
+		zerarTudo();
+		setUpMission();
+	}
+	
+	function previousMission(){
+	
+		if(stats.missionNumber<1){
+			stats.missionNumber = 0;
+		}
+		else{
+			stats.missionNumber = stats.missionNumber-1;
+		}
+		
+		zerarTudo();
+		setUpMission();
+	}
+	
+	function setUpMission(){
+		document.getElementById('output').innerHTML = msgMission() + msg;
+	}
+	
+	function verifyCodeAndStats(){
+	var r = '';
+	
+		debugger;
+		switch(stats.missionNumber){
+			case 0:
+				if(stats.userName ==='Nda' || stats.userEmail ==='Nda'){
+					stats.valid = false;
+				}else{
+					stats.valid = true;
+					r = r+ '<span style="display: inline-block; color: green">Missão Cumprida! Parabéns!</span>\n\
+<span style="display: inline-block; color: green">Clique em ">>" para a próxima missão ou "<<" para a missão anterior.</span>\n';
+				
+				}
+				break;
+			case 1:
+				if(stats.files.length <1 || stats.index.length <1 || stats.isInit == false){
+					stats.valid = false;
+				}else{
+					stats.valid = true;
+					r = r+ '<span style="display: inline-block; color: green">Missão Cumprida! Parabéns!</span>\n\
+<span style="display: inline-block; color: green">Clique em ">>" para a próxima missão ou "<<" para a missão anterior.</span>\n';
+				
+				}
+			break;
+			case 2:
+				if(stats.files.length <1 || stats.index.length <1 || stats.isInit == false || stats.userName ==='Nda' || stats.userName ==='Nda'){
+					if(stats.index.some(x=>x.staged == false)){
+						stats.valid = false;
+					}
+					else{
+						stats.valid = true;
+						r = r+ '<span style="display: inline-block; color: green">Missão Cumprida! Parabéns!</span>\n\
+<span style="display: inline-block; color: green">Por enquanto é isso! Obrigado por participar do teste da versão Alpha! Bjus!</span>\n';
+						}
+					
+				}else{
+					stats.valid = true;
+					r = r+ '<span style="display: inline-block; color: green">Missão Cumprida! Parabéns!</span>\n\
+<span style="display: inline-block; color: green">Por enquanto é isso! Obrigado por participar do teste da versão Alpha! Bjus!</span>\n';
+				}
+				break;
+			
+			default:
+				r = r + '<span style="display: inline-block; color: Red">Deu ruim na verifação, ligue pro 0800</span>\n';
+				break;
+		
+		}
+		
+		if(!stats.valid){
+			r = r+ '<span style="display: inline-block; color: Red"> Opa! Você ainda não completou a missão. Siga as instruções, verifique o seu código e tente novamente.</span>\n';
+		}
+		
+		return(r);	
 	}
 	
 	function msgMission() {
@@ -218,10 +300,76 @@
 		
 		switch(stats.missionNumber){
 			case 0:
-				mission = '<span style="display: inline-block; color: Black">'+'---------------------------//---------------------------'+ '</span>'+'\n';
+				//mission = '<span style="display: inline-block; color: Black">'+'---------------------------//---------------------------'+ '</span>'+'\n';
+				mission = '\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">	Missão 1</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Olá! Bem Vindo ao Git!</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Primeiro, vamos nos apresentar?</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">O Git quer sabem quem é você, para isso ele precisa do seu nome e email.</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Você pode se identificar local ou globalmente, mas aqui vamos só usar o global.</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">1) Clique na Aba "Para Repositórios" e então clique no bloco "Config". (Veja que o bloco agora está na área de trabalho do blockly!)</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">2) Agora clique na segunda aba do "Config" e escolha "user.name".</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Este é um comando "git config" você usa ele para configurar o seu Git.</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">3) Vamos dizer quem somos, clique na Aba "Outras Opções", clique então no bloco "Nome/Email" e então arraste o bloco para a junção do bloco Config. (É assim que se faz códigos no Blockly!)</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Agora, clique no "Nome/Email" e escreva o seu Nome. Por exemplo "Linus".</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">4) Faça o mesmo para com o seu Email: Coloque outro bloco "Config", junte uma bloco "Nome/Email" e escreva o seu email. Por exemplo "Linus@linux".</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Quando você achar que seu código está pronto Clique no botão "Gerar" para testá-lo!</span>\n'+ '<span style="display: inline-block; color: Black">'+'---------------------------//---------------------------'+ '</span>'+'\n';
 				break;
+			case 1: 
+				mission ='\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">	Missão 2</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Vamos aprender a criar o seu primeiro repositório Git e adicionar arquivos nele.</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Dica: Observe no lado esquerdo as variáveis que mudam com os seus comando!</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple"> </span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">1) Para inicar o versionamento do seu primeiro repositório utilize o bloco "init" e informe o endereço desejado para o repositório por meio do bloco "diretório", usaremos "/" como endereço que é o repositório atual. </span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">2) Com o repositório iniciado, você pode adicionar arquivos nele. Para isso, primeiro crie um arquivo por meio dos blocos ‘criar arquivo’ e ‘nome_arquivo’ (utilize “file1” no campo nome_arquivo).</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">3) Agora, você pode adicionar o arquivo criado ao versionamento do Git. Para isso crie um bloco "Add" coloque como variável o arquivo que você criou(Neste caso "file1").</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Se fizer tudo certo, ao clicar em "Gerar" as variáveis Index e Arquivos devem conter o seu arquivo!</span>\n\
+<span style="display: inline-block; color: Black">'+'---------------------------//---------------------------'+ '</span>'+'\n';
+				
+				break;
+			case 2:
+				mission = '\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">	Missão 3 </span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Na missão anterior foi mencionado o Index, ele é muito importante e parece ser um pouco complicado, mas na verdade não é tão complicado assim.</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">O Index é uma cópia DAQUELE INSTANTE dos seus arquivos (aqueles arquivos adicionados com o "Add"), nele são salvas todas as mudanças feitas até agora aos arquivos.</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Mas essa cópia é temporária, sempre que for feita alguma nova mudança os arquivos modificados precisam ser RE-adicionados ao Index e a cópia anterior é descartada.</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Agora, se você quiser salvar a versão no Index você tem que usar o "Commit", só então realmente uma cópia permanente é salva!</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Resumindo: Cria/Modifica o Arquivo, Adiciona as mudanças ao Index e Salva as mudanças com o "Commit".</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Vamos fazer isso!</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Desde o começo, só para relembrar, faça:</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">1) Config com nome e email</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">2) Init</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">3) Crie um arquivo</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">4) Adicione o arquivo ao Index</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Antes de usar o "Commit" vamos ver usas entradas. Sempre que você for fazer um commit tem que ser adicionado um comentário sobre a versão sendo salva (Exemplo:"Corrigi um bug", "Adicionei X"...).</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Se der um commit nú e crú, o Git vai abrir um editor de texto para que seja escrito o comentário, mas se você usar o argumento "-m" dá para adicionar o comentário no próprio comando!(Exemplo: git commmit -m "Primeiro commit!")</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Sobre o "-a". Ficar adicionando Todas as mudanças dos arquivos usando "Add" pode ser chato e demorado, então se o arquivo modificado já foi adicionado alguma vez ao Index você pode usar o "-a" no commit para fazer ele buscar TODOS os arquivos modficados e adicionar todas as mudanças automatimante ao Index e, em seguida, fazer o commit!</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">(Exemplo -a e -m: git commit -a -m "Segundo commmit!")</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">Enfim:</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">5) Salve permanentemente com "Commit",</span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="word-wrap: break-word; display: inline-block; color: Purple">FIM</span>\n\
+<span style="display: inline-block; color: Black">'+'---------------------------//---------------------------'+ '</span>'+'\n';
+				break;
+			
 			default:
-				mission = '<span style="display: inline-block; color: Black">'+'Erro!\n\n'+ '</span>'+'\n';
+				mission = '<span style="display: inline-block; color: Black">'+'Erro Missão!\n\n'+ '</span>'+'\n';
 			
 		}
 	
@@ -277,12 +425,12 @@
 	
 	
 	if(!alert){
-	  msg = parseCode(omega);
+	  msg = parseCode(code);
 	  showStats();
 	  }
 	  
 	  msg = parseMsgToHtml(msg);
-	  document.getElementById('output').innerHTML = msgMission() + msg;
+	  document.getElementById('output').innerHTML = msgMission() + msg+verifyCodeAndStats();
     }
 
     function runCode() {

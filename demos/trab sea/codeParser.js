@@ -509,10 +509,10 @@
 	
 	stats.curDir = '/home';
 	stats.isInit = false;
-	stats.userName = '';
-	stats.userEmail = '';
-	stats.branch = '';
-	stats.repRemoto = '';
+	stats.userName = 'Nda';
+	stats.userEmail = 'Nda';
+	stats.branch = 'Nda';
+	stats.repRemoto = 'Nda';
 	stats.index = [];
 	stats.files = [];
 	stats.valid = false;
@@ -521,6 +521,6 @@
 	while (saida.firstChild) saida.removeChild(saida.firstChild);
 	msg = '';
 	
-	
+	showStats();
 	}
 	
