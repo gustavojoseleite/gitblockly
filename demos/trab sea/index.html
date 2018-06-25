@@ -35,13 +35,13 @@
 
   <div style="width: 100% ">
     <div id="blocklyDiv"
-        style="display: inline-block; height: 480px; width: 49%"></div>
+        style="display: inline-block; height: 480px; width: 42%"></div>
 	<!--<textarea id="output" disabled="disabled"
         style="display: inline-block; height: 480px; width: 28%;">
     </textarea>-->
 	
 	<div
-    style="display: inline-block; height: 480px; width: 35%; ">
+    style="display: inline-block; word-break: break-word; height: 460px; width: 42%; ">
     
 		<div
 		style="overflow: scroll; height: 96%; width: 100%;">
@@ -99,10 +99,11 @@
     <h1>Olá!</h1>
     <div>
 	<span >Como Usar:</span>
-<span class="modal-span">Na tela à sua esquerda você coloca os seus blocos: Clique nas abas em baixo de Comandos, nelas estão os blocos! Clique/Arraste-os para usá-los!</span>
+<span class="modal-span">Na tela à sua esquerda você coloca os seus blocos: Clique nas abas "Para repositórios", "Sobre repositórios" ou "Outras opções", nelas estão os blocos! Clique/Arraste-os para usá-los!</span>
+<span class="modal-span"> Cada bloco possui uma função dentro da ferramenta, utilize-os de forma adequada para cumprir as missões que são dadas. Para maiores informações a respeito de cada bloco, posicione o cursor sobre eles!</span>
 <span class="modal-span">A tela à sua direita é apresentada a missão que você deve seguir: Quando terminar de montar os blocos, clique em "Gerar" para verificar seu código.</span>
 <span class="modal-span">"<<" e ">>" navegam pelas missões.</span>
-<span style="display: block;"></span>
+<span style="display: block; "></span>
 <span style="display: block;">Siga as missões apresentadas e aprenda a usar Git!</span>
 	</div>
     </div>
@@ -115,7 +116,7 @@
       <block type="initi"></block>
       <block type="clone"></block>
     </category>
-    <category name="Sobre repositorios">
+    <category name="Sobre repositórios">
       <block type="add"></block>
       <block type="commit"></block>
     </category>
@@ -132,52 +133,6 @@
   </xml>
   <xml id="startBlocks" style="display: none">
   	<!
-    <block type="controls_if" inline="false" x="20" y="20">
-      <mutation else="1"></mutation>
-      <value name="IF0">
-        <block type="logic_compare" inline="true">
-          <field name="OP">EQ</field>
-          <value name="A">
-            <block type="math_arithmetic" inline="true">
-              <field name="OP">MULTIPLY</field>
-              <value name="A">
-                <block type="math_number">
-                  <field name="NUM">6</field>
-                </block>
-              </value>
-              <value name="B">
-                <block type="math_number">
-                  <field name="NUM">7</field>
-                </block>
-              </value>
-            </block>
-          </value>
-          <value name="B">
-            <block type="math_number">
-              <field name="NUM">42</field>
-            </block>
-          </value>
-        </block>
-      </value>
-      <statement name="DO0">
-        <block type="text_print" inline="false">
-          <value name="TEXT">
-            <block type="text">
-              <field name="TEXT">Don't panic</field>
-            </block>
-          </value>
-        </block>
-      </statement>
-      <statement name="ELSE">
-        <block type="text_print" inline="false">
-          <value name="TEXT">
-            <block type="text">
-              <field name="TEXT">Panic</field>
-            </block>
-          </value>
-        </block>
-      </statement>
-    </block>
     >
   </xml>
 
@@ -302,70 +257,68 @@
 			case 0:
 				//mission = '<span style="display: inline-block; color: Black">'+'---------------------------//---------------------------'+ '</span>'+'\n';
 				mission = '\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">	Missão 1</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Olá! Bem Vindo ao Git!</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Primeiro, vamos nos apresentar?</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">O Git quer sabem quem é você, para isso ele precisa do seu nome e email.</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Você pode se identificar local ou globalmente, mas aqui vamos só usar o global.</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">1) Clique na Aba "Para Repositórios" e então clique no bloco "Config". (Veja que o bloco agora está na área de trabalho do blockly!)</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">2) Agora clique na segunda aba do "Config" e escolha "user.name".</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Este é um comando "git config" você usa ele para configurar o seu Git.</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">3) Vamos dizer quem somos, clique na Aba "Outras Opções", clique então no bloco "Nome/Email" e então arraste o bloco para a junção do bloco Config. (É assim que se faz códigos no Blockly!)</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Agora, clique no "Nome/Email" e escreva o seu Nome. Por exemplo "Linus".</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">4) Faça o mesmo para com o seu Email: Coloque outro bloco "Config", junte uma bloco "Nome/Email" e escreva o seu email. Por exemplo "Linus@linux".</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Quando você achar que seu código está pronto Clique no botão "Gerar" para testá-lo!</span>\n'+ '<span style="display: inline-block; color: Black">'+'---------------------------//---------------------------'+ '</span>'+'\n';
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Black">	Missão 1</span>\n\
+<span style="font-size: 12pt; word-wrap: break-word; display: inline-block; color: Purple">Olá! Bem Vindo ao Git!</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">Primeiro, vamos nos apresentar?</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">O Git quer saber quem é você, para isso ele precisa do seu nome e email.</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">Você pode se identificar local ou globalmente, mas aqui vamos só usar o global.</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">1) Clique na Aba "Para Repositórios" e então clique no bloco "Config". (Veja que o bloco agora está na área de trabalho do blockly!)</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">2) Agora clique no segundo parâmetro do "Config" e escolha "user.name".</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">Este é um comando "git config" você usa ele para configurar o seu Git.</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">3) Vamos dizer quem somos, clique na Aba "Outras Opções", clique então no bloco "Nome/Email" e então arraste o bloco para a junção do bloco Config. (É assim que se faz códigos no Blockly!)</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">Agora, clique no "Nome/Email" e escreva o seu Nome. Por exemplo "Linus".</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">4) Faça o mesmo para com o seu Email: Coloque outro bloco "Config", junte uma bloco "Nome/Email" e escreva o seu email. Por exemplo "Linus@linux".</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">Quando você achar que seu código está pronto Clique no botão "Gerar" para testá-lo!</span>\n'+ '<span style="display: inline-block; color: Black">'+'------------------------------------------------------'+ '</span>'+'\n';
 				break;
 			case 1: 
 				mission ='\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">	Missão 2</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Vamos aprender a criar o seu primeiro repositório Git e adicionar arquivos nele.</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Dica: Observe no lado esquerdo as variáveis que mudam com os seus comando!</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple"> </span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">1) Para inicar o versionamento do seu primeiro repositório utilize o bloco "init" e informe o endereço desejado para o repositório por meio do bloco "diretório", usaremos "/" como endereço que é o repositório atual. </span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">2) Com o repositório iniciado, você pode adicionar arquivos nele. Para isso, primeiro crie um arquivo por meio dos blocos ‘criar arquivo’ e ‘nome_arquivo’ (utilize “file1” no campo nome_arquivo).</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">3) Agora, você pode adicionar o arquivo criado ao versionamento do Git. Para isso crie um bloco "Add" coloque como variável o arquivo que você criou(Neste caso "file1").</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Se fizer tudo certo, ao clicar em "Gerar" as variáveis Index e Arquivos devem conter o seu arquivo!</span>\n\
-<span style="display: inline-block; color: Black">'+'---------------------------//---------------------------'+ '</span>'+'\n';
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Black">	Missão 2</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">Vamos aprender a criar o seu primeiro repositório Git e adicionar arquivos nele.</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">Dica: Observe no lado direito as variáveis que mudam com os seus comando!</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple"> </span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">1) Para inicar o versionamento do seu primeiro repositório utilize o bloco "init" e informe o endereço desejado para o repositório por meio do bloco "diretório", usaremos "/" como endereço que é o repositório atual. </span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">2) Com o repositório iniciado, você pode adicionar arquivos nele. Para isso, primeiro crie um arquivo por meio dos blocos ‘criar arquivo’ e ‘nome_arquivo’ (utilize “file1” no campo nome_arquivo).</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">3) Agora, você pode adicionar o arquivo criado ao versionamento do Git. Para isso crie um bloco "Add" coloque como variável o arquivo que você criou(Neste caso "file1").</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">Se tudo estiver certo, ao clicar em "Gerar" as variáveis Index e Arquivos devem conter o seu arquivo!</span>\n\
+<span style="display: inline-block; color: Black">'+'--------------------------------------------------------'+ '</span>'+'\n';
 				
 				break;
 			case 2:
 				mission = '\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">	Missão 3 </span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Na missão anterior foi mencionado o Index, ele é muito importante e parece ser um pouco complicado, mas na verdade não é tão complicado assim.</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">O Index é uma cópia DAQUELE INSTANTE dos seus arquivos (aqueles arquivos adicionados com o "Add"), nele são salvas todas as mudanças feitas até agora aos arquivos.</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Mas essa cópia é temporária, sempre que for feita alguma nova mudança os arquivos modificados precisam ser RE-adicionados ao Index e a cópia anterior é descartada.</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Agora, se você quiser salvar a versão no Index você tem que usar o "Commit", só então realmente uma cópia permanente é salva!</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Resumindo: Cria/Modifica o Arquivo, Adiciona as mudanças ao Index e Salva as mudanças com o "Commit".</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Vamos fazer isso!</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Desde o começo, só para relembrar, faça:</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">1) Config com nome e email</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">2) Init</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">3) Crie um arquivo</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">4) Adicione o arquivo ao Index</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Antes de usar o "Commit" vamos ver usas entradas. Sempre que você for fazer um commit tem que ser adicionado um comentário sobre a versão sendo salva (Exemplo:"Corrigi um bug", "Adicionei X"...).</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Se der um commit nú e crú, o Git vai abrir um editor de texto para que seja escrito o comentário, mas se você usar o argumento "-m" dá para adicionar o comentário no próprio comando!(Exemplo: git commmit -m "Primeiro commit!")</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Sobre o "-a". Ficar adicionando Todas as mudanças dos arquivos usando "Add" pode ser chato e demorado, então se o arquivo modificado já foi adicionado alguma vez ao Index você pode usar o "-a" no commit para fazer ele buscar TODOS os arquivos modficados e adicionar todas as mudanças automatimante ao Index e, em seguida, fazer o commit!</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">(Exemplo -a e -m: git commit -a -m "Segundo commmit!")</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">Enfim:</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">5) Salve permanentemente com "Commit",</span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
-<span style="word-wrap: break-word; display: inline-block; color: Purple">FIM</span>\n\
-<span style="display: inline-block; color: Black">'+'---------------------------//---------------------------'+ '</span>'+'\n';
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Black">	Missão 3</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">Na missão anterior foi mencionado o Index, ele é muito importante e parece ser um pouco complicado, mas na verdade não é tão complicado assim.</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">O Index é uma cópia DAQUELE INSTANTE dos seus arquivos (aqueles arquivos adicionados com o "Add"), nele são salvas todas as mudanças feitas até agora aos arquivos.</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">Mas essa cópia é temporária, sempre que for feita alguma nova mudança os arquivos modificados precisam ser RE-adicionados ao Index e a cópia anterior é descartada.</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">Agora, se você quiser salvar a versão no Index você tem que usar o "Commit", só então realmente uma cópia permanente é salva!</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">Resumindo: Cria/Modifica o Arquivo, Adiciona as mudanças ao Index e Salva as mudanças com o "Commit".</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">Vamos fazer isso!</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">Desde o começo, só para relembrar, faça:</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">1) Config com nome e email</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">2) Init</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">3) Crie um arquivo</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">4) Adicione o arquivo ao Index</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">Antes de usar o "Commit" vamos ver seus parâmetros de entrada. Sempre que você for fazer um commit tem que ser adicionado um comentário sobre a versão sendo salva (Exemplo:"Corrigi um bug", "Adicionei X"...).</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">Se der um simples, o Git vai abrir um editor de texto para que seja escrito o comentário, mas se você usar o argumento "-m" dá para adicionar o comentário no próprio comando!(Exemplo: git commmit -m "Primeiro commit!")</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">Sobre o "-a". Ficar adicionando Todas as mudanças dos arquivos usando "Add" pode ser chato e demorado, então se o arquivo modificado já foi adicionado alguma vez ao Index você pode usar o "-a" no commit para fazer ele buscar TODOS os arquivos modficados e adicionar todas as mudanças automatimante ao Index e, em seguida, fazer o commit!</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">(Exemplo -a e -m: git commit -a -m "Segundo commmit!")</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">Enfim:</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple">5) Salve permanentemente com "Commit",</span>\n\
+<span style="font-size: 12pt;word-wrap: break-word; display: inline-block; color: Purple"></span>\n\
+<span style="display: inline-block; color: Black">'+'--------------------------------------------------------'+ '</span>'+'\n';
 				break;
 			
 			default:
